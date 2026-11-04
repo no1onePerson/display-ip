@@ -1,17 +1,13 @@
-# Display IP — native Apple-inspired design
+# IP Prism — native design system
 
-## Direction
+IP Prism is a compact, restrained macOS utility. The prism mark combines refracting cyan/violet planes with a globe arc and network point. Original geometric artwork is generated into all macOS icon sizes; no Apple brand assets are used.
 
-A quiet, glassy utility that belongs in the macOS menu bar. Native SwiftUI materials let the desktop subtly show through. Use semantic foreground colors, rounded typography, SF Symbols, generous spacing, and a clear hierarchy: public address, location, network details, then actions. No imitation title bars or Apple branding.
+Use real SwiftUI system materials with semantic colors. A regular-material shell contains an ultra-thin card; Reduce Transparency substitutes an opaque system background. Typography uses the system face with rounded address numerals. Data has a clear hierarchy: connection address, location, provider, timestamp. Long addresses wrap rather than overflow.
 
-## Surfaces and motion
+A 490-point panel separates Overview, Network, Location, Providers, and History. Settings use a sidebar and grouped native controls. Permission explanations precede optional system prompts. Failures preserve cached data and show an explicit stale/offline message. Unknown fields say Unavailable; uncertain VPN/proxy status is never presented as a fact.
 
-The menu bar opens a compact 390-point panel with a regular-material backdrop and an ultra-thin-material inner card. A faint border gives depth. Animate address changes with a short 250 ms transition; respect Reduce Motion. Keep loading visible and retain the timestamped previous result on failure. Never show invented location or network details.
+Motion is a short ease-in-out section transition, disabled with Reduce Motion. A native progress indicator shows active work. Copy confirmation is text and icon feedback. Sounds are original, short synthesized tones with attack/decay envelopes, explicit opt-in, volume, cooldown, and quiet hours.
 
-## Controls
+Widgets prioritize a cached address and timestamp, with more details in medium/large sizes. Privacy mode removes sensitive shared values. Native monochrome menu bar symbols follow system tint.
 
-Native settings use grouped sections for menu bar formatting, provider preference, refresh interval, and system integration. Permission prompts occur when the relevant toggle is enabled. Expose system errors. A hidden menu bar label falls back to a network symbol so the app stays reachable. Widgets show the last successful lookup and its timestamp.
-
-## Release quality gate
-
-Verify contrast, keyboard navigation, VoiceOver, Reduce Transparency, Reduce Motion, dark/light appearance, long IPv6 addresses, permission denial, App Group sharing, and signed installation on macOS before calling a release stable. The initial release is a preview until these checks and notarization are complete.
+Before a stable release, inspect actual rendering in light/dark, contrast modes, VoiceOver, Reduce Motion, Reduce Transparency, long IPv6, empty/error/loading states, and keyboard navigation. No pixel-perfect or accessibility conformance claim is made without those native checks.

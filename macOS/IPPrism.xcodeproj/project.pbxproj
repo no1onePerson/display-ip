@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+"archiveVersion" = "1";
+"classes" = {
+
+};
+"objectVersion" = "56";
+"objects" = {
+"BC4A71180870F7945155FBB0" = {
+"isa" = "XCLocalSwiftPackageReference";
+"relativePath" = ".";
+};
+"F5AE27228AC34400DE4A3768" = {
+"isa" = "XCSwiftPackageProductDependency";
+"package" = "BC4A71180870F7945155FBB0";
+"productName" = "PrismCore";
+};
+"73EBF6644258C120893E685D" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"SWIFT_VERSION" = "6.0";
+"SWIFT_STRICT_CONCURRENCY" = "complete";
+"MACOSX_DEPLOYMENT_TARGET" = "14.0";
+"SDKROOT" = "macosx";
+"CLANG_ENABLE_MODULES" = "YES";
+"ENABLE_HARDENED_RUNTIME" = "YES";
+"CODE_SIGN_STYLE" = "Automatic";
+"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+"DEBUG_INFORMATION_FORMAT" = "dwarf";
+"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+};
+"name" = "Debug";
+};
+"0B0C687DF8B6B8DC790B519C" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"SWIFT_VERSION" = "6.0";
+"SWIFT_STRICT_CONCURRENCY" = "complete";
+"MACOSX_DEPLOYMENT_TARGET" = "14.0";
+"SDKROOT" = "macosx";
+"CLANG_ENABLE_MODULES" = "YES";
+"ENABLE_HARDENED_RUNTIME" = "YES";
+"CODE_SIGN_STYLE" = "Automatic";
+"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+};
+"name" = "Release";
+};
+"76F8DEC3DFE0BDB465198890" = {
+"isa" = "XCConfigurationList";
+"buildConfigurations" = ("73EBF6644258C120893E685D",
+"0B0C687DF8B6B8DC790B519C");
+"defaultConfigurationIsVisible" = "0";
+"defaultConfigurationName" = "Release";
+};
+"47940630041ED827A4E87763" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/DisplayIPApp.swift";
+"sourceTree" = "<group>";
+};
+"69BE27D8022A78E0D0EF4F41" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "47940630041ED827A4E87763";
+};
+"BE68FFEAA9E1153B7E1A72B7" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/PrismModel.swift";
+"sourceTree" = "<group>";
+};
+"CF341748FE66B0ACF8DB0F49" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "BE68FFEAA9E1153B7E1A72B7";
+};
+"DC07A8E28F23DA2E85D104F8" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/PrismPanel.swift";
+"sourceTree" = "<group>";
+};
+"B661C83BD836D7AF6FDD25CA" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "DC07A8E28F23DA2E85D104F8";
+};
+"18CEAB5E5C77D815816147C8" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/PrismSettings.swift";
+"sourceTree" = "<group>";
+};
+"E34FC974E21A106546254D1B" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "18CEAB5E5C77D815816147C8";
+};
+"1A9B9B46A9FEC3F02C29E982" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/SystemServices.swift";
+"sourceTree" = "<group>";
+};
+"B94B16C225D09FC7FBB0EDC1" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "1A9B9B46A9FEC3F02C29E982";
+};
+"5B507E9E4952D2447B4FB3D8" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Shared/Snapshot.swift";
+"sourceTree" = "<group>";
+};
+"8D859917DA44349D09DCB664" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "5B507E9E4952D2447B4FB3D8";
+};
+"06B38E429579BCE41DEA8621" = {
+"isa" = "PBXSourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("69BE27D8022A78E0D0EF4F41",
+"CF341748FE66B0ACF8DB0F49",
+"B661C83BD836D7AF6FDD25CA",
+"E34FC974E21A106546254D1B",
+"B94B16C225D09FC7FBB0EDC1",
+"8D859917DA44349D09DCB664");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"5B2D2E1CD1EA09990CD4EACE" = {
+"isa" = "PBXBuildFile";
+"productRef" = "F5AE27228AC34400DE4A3768";
+};
+"E9828E578FD4E5CEA5266195" = {
+"isa" = "PBXFrameworksBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("5B2D2E1CD1EA09990CD4EACE");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"8BF729FFE074CAEE622C0292" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "folder.assetcatalog";
+"path" = "Resources/Assets.xcassets";
+"sourceTree" = "<group>";
+};
+"5522B3B3B2EACC1C8F9BEAAC" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "8BF729FFE074CAEE622C0292";
+};
+"FC17841512293E083A4F618C" = {
+"isa" = "PBXResourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("5522B3B3B2EACC1C8F9BEAAC");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"7A5B87A68969B3F0BD209405" = {
+"isa" = "PBXFileReference";
+"explicitFileType" = "wrapper.application";
+"includeInIndex" = "0";
+"path" = "IP Prism.app";
+"sourceTree" = "BUILT_PRODUCTS_DIR";
+};
+"33BBDD894EEB20345437CED7" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "81F671FD1E75B9808B8A26DC";
+"settings" = {
+"ATTRIBUTES" = ("RemoveHeadersOnCopy");
+};
+};
+"6105FBB0CA6322F1D3A595D2" = {
+"isa" = "PBXCopyFilesBuildPhase";
+"buildActionMask" = "2147483647";
+"dstPath" = "";
+"dstSubfolderSpec" = "13";
+"files" = ("33BBDD894EEB20345437CED7");
+"name" = "Embed App Extensions";
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"01E77404E10F254C43E64C55" = {
+"isa" = "PBXContainerItemProxy";
+"containerPortal" = "244210E48437B6556980A702";
+"proxyType" = "1";
+"remoteGlobalIDString" = "84D72FB6B7C048E18ECE8608";
+"remoteInfo" = "IPPrismWidget";
+};
+"A4C2D386AB0259F33DCDC427" = {
+"isa" = "PBXTargetDependency";
+"target" = "84D72FB6B7C048E18ECE8608";
+"targetProxy" = "01E77404E10F254C43E64C55";
+};
+"AA3EEDA504FB52E130C0D4E7" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
+"PRODUCT_NAME" = "IP Prism";
+"INFOPLIST_FILE" = "Configuration/IPPrism.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
+"MARKETING_VERSION" = "0.3.0";
+"CURRENT_PROJECT_VERSION" = "3";
+"SKIP_INSTALL" = "NO";
+"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+"ENABLE_APP_SANDBOX" = "YES";
+"GENERATE_INFOPLIST_FILE" = "NO";
+"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
+"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+"DEBUG_INFORMATION_FORMAT" = "dwarf";
+"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+};
+"name" = "Debug";
+};
+"2E8DEE7F1912B44031E2C2BF" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
+"PRODUCT_NAME" = "IP Prism";
+"INFOPLIST_FILE" = "Configuration/IPPrism.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
+"MARKETING_VERSION" = "0.3.0";
+"CURRENT_PROJECT_VERSION" = "3";
+"SKIP_INSTALL" = "NO";
+"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+"ENABLE_APP_SANDBOX" = "YES";
+"GENERATE_INFOPLIST_FILE" = "NO";
+"ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
+"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+};
+"name" = "Release";
+};
+"C58D70B4B49802D7B4F6E917" = {
+"isa" = "XCConfigurationList";
+"buildConfigurations" = ("AA3EEDA504FB52E130C0D4E7",
+"2E8DEE7F1912B44031E2C2BF");
+"defaultConfigurationIsVisible" = "0";
+"defaultConfigurationName" = "Release";
+};
+"8CFD4E10E0FF34CB178F4223" = {
+"isa" = "PBXNativeTarget";
+"buildConfigurationList" = "C58D70B4B49802D7B4F6E917";
+"buildPhases" = ("06B38E429579BCE41DEA8621",
+"E9828E578FD4E5CEA5266195",
+"FC17841512293E083A4F618C",
+"6105FBB0CA6322F1D3A595D2");
+"buildRules" = ();
+"dependencies" = ("A4C2D386AB0259F33DCDC427");
+"name" = "IPPrism";
+"productName" = "IPPrism";
+"productReference" = "7A5B87A68969B3F0BD209405";
+"productType" = "com.apple.product-type.application";
+"packageProductDependencies" = ("F5AE27228AC34400DE4A3768");
+};
+"4BDE52B3446002B09EEA5D92" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Widget/DisplayIPWidget.swift";
+"sourceTree" = "<group>";
+};
+"071AD27609FE3C9C16EE1B7A" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "4BDE52B3446002B09EEA5D92";
+};
+"7D4AF66E067D9134418778B9" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "5B507E9E4952D2447B4FB3D8";
+};
+"EE2564D131369D0C98A68B12" = {
+"isa" = "PBXSourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ("071AD27609FE3C9C16EE1B7A",
+"7D4AF66E067D9134418778B9");
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"CC3CA1F78EC8C3173D0BAB63" = {
+"isa" = "PBXFrameworksBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ();
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"3090CE6368440527D65E1F5D" = {
+"isa" = "PBXResourcesBuildPhase";
+"buildActionMask" = "2147483647";
+"files" = ();
+"runOnlyForDeploymentPostprocessing" = "0";
+};
+"81F671FD1E75B9808B8A26DC" = {
+"isa" = "PBXFileReference";
+"explicitFileType" = "wrapper.app-extension";
+"includeInIndex" = "0";
+"path" = "IPPrismWidget.appex";
+"sourceTree" = "BUILT_PRODUCTS_DIR";
+};
+"8393A0E9D7D4BA1CF7C6390F" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app.widget";
+"PRODUCT_NAME" = "IPPrismWidget";
+"INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
+"MARKETING_VERSION" = "0.3.0";
+"CURRENT_PROJECT_VERSION" = "3";
+"SKIP_INSTALL" = "YES";
+"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+"ENABLE_APP_SANDBOX" = "YES";
+"GENERATE_INFOPLIST_FILE" = "NO";
+"APPLICATION_EXTENSION_API_ONLY" = "YES";
+"SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
+"DEBUG_INFORMATION_FORMAT" = "dwarf";
+"SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
+};
+"name" = "Debug";
+};
+"0F35CEA409BAEAA27267179F" = {
+"isa" = "XCBuildConfiguration";
+"buildSettings" = {
+"PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app.widget";
+"PRODUCT_NAME" = "IPPrismWidget";
+"INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
+"MARKETING_VERSION" = "0.3.0";
+"CURRENT_PROJECT_VERSION" = "3";
+"SKIP_INSTALL" = "YES";
+"LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+"ENABLE_APP_SANDBOX" = "YES";
+"GENERATE_INFOPLIST_FILE" = "NO";
+"APPLICATION_EXTENSION_API_ONLY" = "YES";
+"SWIFT_OPTIMIZATION_LEVEL" = "-O";
+"DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+};
+"name" = "Release";
+};
+"62ECF19E93E3907EABFD06DD" = {
+"isa" = "XCConfigurationList";
+"buildConfigurations" = ("8393A0E9D7D4BA1CF7C6390F",
+"0F35CEA409BAEAA27267179F");
+"defaultConfigurationIsVisible" = "0";
+"defaultConfigurationName" = "Release";
+};
+"84D72FB6B7C048E18ECE8608" = {
+"isa" = "PBXNativeTarget";
+"buildConfigurationList" = "62ECF19E93E3907EABFD06DD";
+"buildPhases" = ("EE2564D131369D0C98A68B12",
+"CC3CA1F78EC8C3173D0BAB63",
+"3090CE6368440527D65E1F5D");
+"buildRules" = ();
+"dependencies" = ();
+"name" = "IPPrismWidget";
+"productName" = "IPPrismWidget";
+"productReference" = "81F671FD1E75B9808B8A26DC";
+"productType" = "com.apple.product-type.app-extension";
+};
+"0A3E27B8CA818264D75C8D81" = {
+"isa" = "PBXGroup";
+"children" = ("7A5B87A68969B3F0BD209405",
+"81F671FD1E75B9808B8A26DC");
+"name" = "Products";
+"sourceTree" = "<group>";
+};
+"0D6E4079E36703EBD37C0072" = {
+"isa" = "PBXGroup";
+"children" = ("47940630041ED827A4E87763",
+"BE68FFEAA9E1153B7E1A72B7",
+"DC07A8E28F23DA2E85D104F8",
+"18CEAB5E5C77D815816147C8",
+"1A9B9B46A9FEC3F02C29E982",
+"5B507E9E4952D2447B4FB3D8",
+"8BF729FFE074CAEE622C0292",
+"4BDE52B3446002B09EEA5D92",
+"0A3E27B8CA818264D75C8D81");
+"sourceTree" = "<group>";
+};
+"244210E48437B6556980A702" = {
+"isa" = "PBXProject";
+"attributes" = {
+"LastUpgradeCheck" = "1600";
+};
+"buildConfigurationList" = "76F8DEC3DFE0BDB465198890";
+"compatibilityVersion" = "Xcode 14.0";
+"developmentRegion" = "en";
+"hasScannedForEncodings" = "0";
+"knownRegions" = ("en",
+"Base");
+"mainGroup" = "0D6E4079E36703EBD37C0072";
+"productRefGroup" = "0A3E27B8CA818264D75C8D81";
+"projectDirPath" = "";
+"projectRoot" = "";
+"packageReferences" = ("BC4A71180870F7945155FBB0");
+"targets" = ("8CFD4E10E0FF34CB178F4223",
+"84D72FB6B7C048E18ECE8608");
+};
+};
+"rootObject" = "244210E48437B6556980A702";
+}

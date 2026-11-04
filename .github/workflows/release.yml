@@ -1,46 +1,99 @@
-name: Build macOS release
+name: IP Prism release
 on:
   push:
     tags: ['v*']
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 jobs:
-  macos:
+  release:
     runs-on: macos-15
+    permissions:
+      contents: write
+    env:
+      CERTIFICATE_BASE64: ${{ secrets.DEVELOPER_ID_CERTIFICATE_BASE64 }}
+      CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+      SIGNING_IDENTITY: ${{ secrets.DEVELOPER_ID_IDENTITY }}
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+      TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APP_PROFILE_BASE64: ${{ secrets.APP_PROFILE_BASE64 }}
+      WIDGET_PROFILE_BASE64: ${{ secrets.WIDGET_PROFILE_BASE64 }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Install project generator
-        run: brew install xcodegen
-      - name: Generate Xcode project
-        working-directory: macOS
-        run: xcodegen generate
-      - name: Build universal app
-        run: >-
-          xcodebuild -project macOS/DisplayIP.xcodeproj -scheme DisplayIP
-          -configuration Release -derivedDataPath macOS/build
-          ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO build
-      - name: Package app and disk image
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+      - name: Validate version and test
         run: |
           set -euo pipefail
-          APP=macOS/build/Build/Products/Release/DisplayIP.app
-          test -d "$APP/Contents/PlugIns/DisplayIPWidget.appex"
-          codesign --force --sign - "$APP/Contents/PlugIns/DisplayIPWidget.appex"
-          codesign --force --sign - "$APP"
-          codesign --verify --deep --strict "$APP"
-          mkdir -p dist staging
-          cp -R "$APP" staging/
-          ln -s /Applications staging/Applications
-          hdiutil create -volname 'Display IP' -srcfolder staging -ov -format UDZO dist/DisplayIP.dmg
-          ditto -c -k --sequesterRsrc --keepParent "$APP" dist/DisplayIP.app.zip
-          shasum -a 256 dist/DisplayIP.dmg dist/DisplayIP.app.zip > dist/SHA256SUMS.txt
-      - uses: actions/upload-artifact@v4
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            python3 - "$GITHUB_REF_NAME" <<'PY'
+          import re,sys
+          assert re.fullmatch(r'v0\.3\.0(?:-[A-Za-z0-9.-]+)?', sys.argv[1]), 'Tag must match project version 0.3.0'
+          PY
+          fi
+          swift test --package-path macOS
+      - name: Configure optional signing
+        run: |
+          set -euo pipefail
+          if [ -n "$CERTIFICATE_BASE64" ]; then
+            : "${CERTIFICATE_PASSWORD:?}" "${SIGNING_IDENTITY:?}" "${APPLE_ID:?}" "${APPLE_APP_PASSWORD:?}" "${TEAM_ID:?}" "${APP_PROFILE_BASE64:?}" "${WIDGET_PROFILE_BASE64:?}"
+            KEYCHAIN_PASSWORD=$(openssl rand -hex 24)
+            security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+            security set-keychain-settings -lut 21600 build.keychain
+            security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+            printf '%s' "$CERTIFICATE_BASE64" | base64 --decode > "$RUNNER_TEMP/signing.p12"
+            security import "$RUNNER_TEMP/signing.p12" -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+            security list-keychains -d user -s build.keychain login.keychain-db
+            xcrun notarytool store-credentials IPPrismNotary --apple-id "$APPLE_ID" --password "$APPLE_APP_PASSWORD" --team-id "$TEAM_ID" --keychain build.keychain
+            printf '%s' "$APP_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/app.provisionprofile"
+            printf '%s' "$WIDGET_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/widget.provisionprofile"
+            echo 'SIGNED_RELEASE=true' >> "$GITHUB_ENV"
+          else
+            echo 'SIGNED_RELEASE=false' >> "$GITHUB_ENV"
+          fi
+      - name: Archive Release
+        run: |
+          set -o pipefail
+          xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism -configuration Release -archivePath macOS/build/IPPrism.xcarchive ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO archive 2>&1 | tee release-build.log
+      - name: Sign and notarize app
+        if: env.SIGNED_RELEASE == 'true'
+        run: |
+          set -euo pipefail
+          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IP Prism.app'
+          cp "$RUNNER_TEMP/app.provisionprofile" "$APP/Contents/embedded.provisionprofile"
+          cp "$RUNNER_TEMP/widget.provisionprofile" "$APP/Contents/PlugIns/IPPrismWidget.appex/Contents/embedded.provisionprofile"
+          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IPPrismWidget.entitlements "$APP/Contents/PlugIns/IPPrismWidget.appex"
+          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IPPrism.entitlements "$APP"
+          ditto -c -k --keepParent "$APP" "$RUNNER_TEMP/notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" --keychain-profile IPPrismNotary --wait
+          xcrun stapler staple "$APP"
+          xcrun stapler validate "$APP"
+          spctl --assess --type execute --verbose=2 "$APP"
+      - name: Package and verify
+        run: Scripts/package.sh 'macOS/build/IPPrism.xcarchive/Products/Applications/IP Prism.app'
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: DisplayIP-macOS
+          name: IPPrism-distribution
           path: dist/*
-      - name: Publish preview release
+      - name: Publish release
         if: startsWith(github.ref, 'refs/tags/')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" dist/* --prerelease --title "Display IP $GITHUB_REF_NAME" --notes "Native macOS menu bar app and widget. Download the DMG and drag DisplayIP to Applications. Requires macOS 14+. Preview build: ad-hoc signed, not Apple notarized; Gatekeeper may block first launch. Widget App Group sharing requires proper Apple Developer signing and must be verified on a Mac."
+          if [ "$SIGNED_RELEASE" = true ]; then
+            NOTES='Developer ID signed and Apple notarized. macOS 14+. Download the DMG and drag IP Prism to Applications.'
+          else
+            NOTES='Development preview. Ad-hoc signed, NOT Developer ID signed or Apple notarized. Gatekeeper may block installation. App Group widget sharing requires proper signing. macOS 14+.'
+          fi
+          gh release create "$GITHUB_REF_NAME" dist/* --prerelease --title "IP Prism $GITHUB_REF_NAME" --notes "$NOTES"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: release-failure-logs
+          path: '*.log'
+      - name: Clean signing material
+        if: always()
+        run: |
+          rm -f "$RUNNER_TEMP/signing.p12" "$RUNNER_TEMP/app.provisionprofile" "$RUNNER_TEMP/widget.provisionprofile"
+          security delete-keychain build.keychain || true
