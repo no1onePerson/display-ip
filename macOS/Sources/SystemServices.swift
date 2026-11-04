@@ -8,7 +8,13 @@ import PrismCore
     var policy = NotificationPolicy()
     var onOpen: (() -> Void)?
     override init() { super.init(); UNUserNotificationCenter.current().delegate = self }
-    func permission() async -> UNAuthorizationStatus { await UNUserNotificationCenter.current().notificationSettings().authorizationStatus }
+    func permission() async -> UNAuthorizationStatus {
+        await withCheckedContinuation { continuation in
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+                continuation.resume(returning: settings.authorizationStatus)
+            }
+        }
+    }
     func request() async throws -> Bool {
         let status = await permission()
         if status == .notDetermined { return try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }

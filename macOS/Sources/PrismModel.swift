@@ -21,6 +21,7 @@ import PrismCore
     private let monitor = NWPathMonitor()
     private let historyStore: HistoryStore
     private var detector = ChangeDetector()
+    private var cachedDate = Date.distantPast
     private var schedule: Task<Void, Never>?, debounce: Task<Void, Never>?
     private var wakeObserver: NSObjectProtocol?, sleepObserver: NSObjectProtocol?
     let notifications = NotificationService()
@@ -34,7 +35,7 @@ import PrismCore
         cacheURL = root.appendingPathComponent("current.json")
         if let data = try? Data(contentsOf: cacheURL), let cached = try? JSONDecoder().decode(Intelligence.self, from: data) { current = cached; _ = detector.observe(cached) }
         do { history = HistoryStore.retain(try historyStore.load(), days: UserDefaults.standard.integer(forKey: "retention"), now: Date()) } catch { self.error = "History could not be read: \(error.localizedDescription)" }
-        if let cached = Snapshot.load() { ipv4 = cached.ipv4; ipv6 = cached.ipv6 }
+        if let cached = Snapshot.load() { ipv4 = cached.ipv4; ipv6 = cached.ipv6; cachedDate = cached.date }
         monitor.pathUpdateHandler = { [weak self] path in
             let connected = path.status == .satisfied
             let type = path.usesInterfaceType(.wifi) ? "Wi-Fi" : path.usesInterfaceType(.wiredEthernet) ? "Ethernet" : path.usesInterfaceType(.cellular) ? "Cellular" : "Other"
@@ -49,6 +50,7 @@ import PrismCore
     func networkChanged(_ connected: Bool, interface: String) {
         let changed = online != connected
         online = connected; self.interface = interface
+        if changed { persistSnapshot() }
         debounce?.cancel()
         if !connected { Task { await manager.cancel(); await ipv6Manager.cancel() }; error = "Offline · showing cached information" }
         debounce = Task { [weak self] in
@@ -106,7 +108,7 @@ import PrismCore
     }
     func persistSnapshot() {
         let privacy = UserDefaults.standard.bool(forKey: "privacy")
-        Snapshot(ipv4: privacy ? nil : ipv4, ipv6: privacy ? nil : ipv6, country: privacy ? nil : current?.countryCode, city: privacy ? nil : current?.city, organization: privacy ? nil : current?.organization, provider: current?.providerName, date: current?.fetchedAt ?? .distantPast, online: online, privateMode: privacy).save()
+        Snapshot(ipv4: privacy ? nil : ipv4, ipv6: privacy ? nil : ipv6, country: privacy ? nil : current?.countryCode, city: privacy ? nil : current?.city, organization: privacy ? nil : current?.organization, provider: current?.providerName, date: current?.fetchedAt ?? cachedDate, online: online, privateMode: privacy).save()
         WidgetCenter.shared.reloadAllTimelines()
     }
     func saveHistory() {
