@@ -28,7 +28,7 @@ import PrismCore
     let notifications = NotificationService()
     let sounds = SoundService()
     init() {
-        UserDefaults.standard.register(defaults: ["interval": 60, "volume": 0.25, "quietStart": 22, "quietEnd": 8, "retention": 30, "notifyIP": true, "notifyConnection": false])
+        UserDefaults.standard.register(defaults: ["interval": 60, "volume": 0.25, "quietStart": 22, "quietEnd": 8, "retention": 30, "notifyIP": true, "notifyConnection": false, "discoverIPv6": true])
         let root = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("IPPrism")
         manager = ProviderManager(transport: CredentialTransport(), stateURL: root.appendingPathComponent("provider-health.json"))
         ipv6Manager = ProviderManager(stateURL: root.appendingPathComponent("ipv6-health.json"))
@@ -99,7 +99,7 @@ import PrismCore
             current = result; error = nil
             do { try FileManager.default.createDirectory(at: cacheURL.deletingLastPathComponent(), withIntermediateDirectories: true); try JSONEncoder().encode(result).write(to: cacheURL, options: .atomic) } catch { self.error = "Could not cache the latest result." }
             if d.bool(forKey: "discoverIPv6") {
-                // Explicitly opt-in: an IPv6-only request may be unreachable on this network.
+                // IPv6-only discovery may be unreachable on this network; users can disable it.
                 if let v6 = try? await ipv6Manager.lookup(priority: [.ipify, .icanhazip], force: true, family: .v6) { await accept(v6) }
             }
             persistSnapshot()

@@ -15,7 +15,7 @@ A native menu bar companion that puts your public connection in focus. Built wit
 - Frosted system-material panel with Overview, Network, Location, Providers, and History sections.
 - Eight provider adapters, optional fields, automatic fallback or manual selection, priority and enable controls.
 - Timeouts, jittered backoff, Retry-After, cooldowns, circuit breaker, budgets, deduplication, caching, cancellation, and health diagnostics.
-- Normalized IPv4/IPv6, independent family comparison, two-observation change confirmation, optional IPv6-only discovery.
+- Normalized IPv4/IPv6, independent family comparison, two-observation change confirmation, IPv6-only discovery (enabled by default).
 - Network-change debounce, sleep/wake scheduling, offline cache, configurable polling.
 - Local history with retention, search, JSON/CSV export, and deletion.
 - Contextual notifications, permission state, quiet hours, privacy mode, and synthesized original sounds.
@@ -60,7 +60,7 @@ Adapters: **IPWho.is, IPinfo, ipapi.co, GeoJS, FreeIPAPI, ipify, icanhazip, Clou
 ## Troubleshooting
 
 - **No result:** check Providers for failures/cooldowns. Free endpoints may rate-limit or change behavior. Last successful data remains visible.
-- **No IPv6:** enable separate IPv6 discovery; your network must support IPv6. Missing IPv6 is not a confirmed change.
+- **No IPv6:** check that separate IPv6 discovery is enabled; your network must support IPv6. Missing IPv6 is not a confirmed change.
 - **No notifications:** enable them in Settings, grant macOS authorization, and check quiet hours and event toggles.
 - **Login approval required:** open the system Login Items page from Settings.
 - **Widget empty:** launch the app, complete a successful lookup, and verify matching App Group provisioning for both bundles.

@@ -58,13 +58,24 @@ struct PrismPanel: View {
     var overview: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("PUBLIC CONNECTION").font(.caption2.weight(.semibold)).tracking(2).foregroundStyle(.secondary)
-            Text(privacy ? "•••.•••.•••.•••" : model.current?.address.value ?? model.ipv4 ?? model.ipv6 ?? "Finding your connection…").font(.system(size: 28, weight: .medium, design: .rounded)).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
+            addressDetail("IPv4", model.ipv4)
+            addressDetail("IPv6", model.ipv6)
+            if model.ipv4 == nil && model.ipv6 == nil { Text("Waiting for an address…").font(.caption).foregroundStyle(.secondary) }
             if let data = model.current {
                 Text(privacy ? "Location hidden" : [data.flag, data.city, data.countryName ?? data.countryCode].compactMap { $0 }.joined(separator: " ")).foregroundStyle(.secondary)
                 Divider(); row("Network", data.isp ?? data.organization); row("Provider", data.providerName)
                 HStack { Text("Last success"); Spacer(); Text(data.fetchedAt, style: .relative) }.font(.caption).foregroundStyle(.secondary)
                 if Date().timeIntervalSince(data.fetchedAt) > 180 || model.error != nil { Label("Cached · may be stale", systemImage: "clock").font(.caption).foregroundStyle(.orange) }
             } else { Text("Waiting for a successful provider response. Cached addresses may be stale.").foregroundStyle(.secondary) }
+        }
+    }
+    func addressDetail(_ label: String, _ address: String?) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Text(label).font(.caption.weight(.semibold)).foregroundStyle(.secondary).frame(width: 38, alignment: .leading).padding(.top, 4)
+            Text(privacy ? "Hidden" : address ?? "Unavailable").font(.system(size: 18, weight: .medium, design: .rounded)).textSelection(.enabled).fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
+            if address != nil && !privacy {
+                Button { copy(address) } label: { Image(systemName: "doc.on.doc") }.buttonStyle(.plain).help("Copy \(label) address").accessibilityLabel("Copy \(label) address")
+            }
         }
     }
     var network: some View {

@@ -10,7 +10,7 @@ struct PrismSettings: View {
     @AppStorage("menuFormat") private var menuFormat = "Flag + IP"
     @AppStorage("compact") private var compact = true
     @AppStorage("preferIPv6") private var preferIPv6 = false
-    @AppStorage("discoverIPv6") private var discoverIPv6 = false
+    @AppStorage("discoverIPv6") private var discoverIPv6 = true
     @AppStorage("customFormat") private var customFormat = "{flag} {ip}"
     @AppStorage("appearance") private var appearance = "System"
     @AppStorage("provider") private var provider = "automatic"
