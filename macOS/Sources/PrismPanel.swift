@@ -108,7 +108,7 @@ struct PrismPanel: View {
         }
     }
     func row(_ title: String, _ value: String?) -> some View {
-        HStack(alignment: .top) { Text(title).foregroundStyle(.secondary); Spacer(); Text(privacy ? "Hidden" : value ?? "Unavailable").multilineTextAlignment(.trailing).textSelection(.enabled) }.font(.callout)
+        HStack(alignment: .top) { Text(title).foregroundStyle(.secondary); Spacer(); Text(privacy ? "Hidden" : value ?? "Unavailable").multilineTextAlignment(.trailing).textSelection(.enabled) }.font(.callout).contextMenu { Button("Copy value") { copy(value) }.disabled(value == nil || privacy) }
     }
     func copy(_ value: String?) {
         guard let value else { return }; NSPasteboard.general.clearContents(); NSPasteboard.general.setString(value, forType: .string); copied = true

@@ -31,21 +31,30 @@ public actor ProviderManager {
     private let transport: any HTTPTransport
     private let now: @Sendable () -> Date
     private let jitter: @Sendable () -> Double
+    private let stateURL: URL?
     private var health: [ProviderID: ProviderHealth] = [:]
     private var cache: [String: Intelligence] = [:]
-    private var flights: [String: Task<Intelligence, Error>] = [:]
-    public init(transport: any HTTPTransport = URLSessionTransport(), now: @escaping @Sendable () -> Date = { Date() }, jitter: @escaping @Sendable () -> Double = { Double.random(in: 0...1) }) { self.transport = transport; self.now = now; self.jitter = jitter }
+    private var flights: [String: (id: UUID, task: Task<Intelligence, Error>)] = [:]
+    public init(transport: any HTTPTransport = URLSessionTransport(), now: @escaping @Sendable () -> Date = { Date() }, jitter: @escaping @Sendable () -> Double = { Double.random(in: 0...1) }, stateURL: URL? = nil) {
+        self.transport = transport; self.now = now; self.jitter = jitter; self.stateURL = stateURL
+        if let stateURL, let data = try? Data(contentsOf: stateURL), let restored = try? JSONDecoder().decode([ProviderID: ProviderHealth].self, from: data) { self.health = restored }
+    }
+    private func persist() {
+        guard let stateURL else { return }
+        do { try FileManager.default.createDirectory(at: stateURL.deletingLastPathComponent(), withIntermediateDirectories: true); try JSONEncoder().encode(health).write(to: stateURL, options: .atomic) } catch { /* A disk failure must not crash networking; current-session limits remain enforced. */ }
+    }
     public func diagnostics() -> [ProviderID: ProviderHealth] { health }
-    public func resetStatistics() { for id in health.keys { var fresh = ProviderHealth(); fresh.nextAllowed = health[id]?.nextAllowed; fresh.requests = health[id]?.requests ?? 0; fresh.windowStart = health[id]?.windowStart ?? now(); health[id] = fresh } }
-    public func cancel() { for task in flights.values { task.cancel() }; flights.removeAll() }
+    public func resetStatistics() { for id in health.keys { var fresh = ProviderHealth(); fresh.nextAllowed = health[id]?.nextAllowed; fresh.requests = health[id]?.requests ?? 0; fresh.windowStart = health[id]?.windowStart ?? now(); health[id] = fresh }; persist() }
+    public func cancel() { for flight in flights.values { flight.task.cancel() }; flights.removeAll() }
     public func lookup(priority: [ProviderID] = ProviderID.allCases, timeout: TimeInterval = 8, force: Bool = false, online: Bool = true, family: Family? = nil) async throws -> Intelligence {
         guard online else { throw LookupError.offline }
         let key = (family?.rawValue ?? "any") + priority.map(\.rawValue).joined(separator: ",")
-        if let task = flights[key] { return try await task.value }
+        if let flight = flights[key] { return try await flight.task.value }
         if !force, let cached = cache[key], now().timeIntervalSince(cached.fetchedAt) < 30 { return cached }
         let task = Task { try await self.perform(priority: priority, timeout: timeout, family: family) }
-        flights[key] = task
-        defer { flights[key] = nil }
+        let identifier = UUID()
+        flights[key] = (identifier, task)
+        defer { if flights[key]?.id == identifier { flights[key] = nil } }
         let result = try await task.value
         cache[key] = result
         return result
@@ -59,7 +68,7 @@ public actor ProviderManager {
             if let next = h.nextAllowed, next > start { continue }
             // Conservative local budget; upstream limits still take precedence.
             if h.requests >= (id == .ipapi ? 500 : 1000) { continue }
-            h.requests += 1; h.nextAllowed = start.addingTimeInterval(id.minimumInterval); health[id] = h
+            h.requests += 1; h.nextAllowed = start.addingTimeInterval(id.minimumInterval); health[id] = h; persist()
             do {
                 let endpoint: String
                 if family == .v6 {
@@ -78,7 +87,7 @@ public actor ProviderManager {
                 if let family, result.address.family != family { throw LookupError.invalidIP }
                 try Task.checkCancellation()
                 h.successes += 1; h.consecutiveFailures = 0; h.lastSuccess = now(); h.latency = now().timeIntervalSince(start); h.lastError = nil
-                health[id] = h
+                health[id] = h; persist()
                 return result
             } catch {
                 if Task.isCancelled { throw CancellationError() }
@@ -86,7 +95,7 @@ public actor ProviderManager {
                 let backoff = min(3600, pow(2, Double(min(h.consecutiveFailures, 10))) * 15) * (1 + jitter() * 0.2)
                 let circuit = h.consecutiveFailures >= 3 ? max(300, backoff) : backoff
                 h.nextAllowed = max(h.nextAllowed ?? start, start.addingTimeInterval(circuit))
-                health[id] = h
+                health[id] = h; persist()
             }
         }
         throw LookupError.unavailable

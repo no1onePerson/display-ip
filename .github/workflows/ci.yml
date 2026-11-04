@@ -24,6 +24,9 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO build analyze 2>&1 | tee native-build.log
+      - name: Annotate compiler failures
+        if: failure()
+        run: python3 Scripts/annotate-errors.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

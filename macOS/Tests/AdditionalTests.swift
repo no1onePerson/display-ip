@@ -55,3 +55,14 @@ final class TestClock: @unchecked Sendable {
     data.countryCode = "12"; #expect(data.flag.isEmpty)
     data.countryCode = "de"; #expect(data.flag == "🇩🇪")
 }
+@Test func budgetPersistsAcrossManagers() async throws {
+    let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: url) }
+    let clock = TestClock()
+    let mock = MockTransport([HTTPResult(data: Data(), status: 429, retryAfter: "600")])
+    let first = ProviderManager(transport: mock, now: { clock.now() }, stateURL: url)
+    do { _ = try await first.lookup(priority: [.ipify]); Issue.record("Expected rate limit") } catch {}
+    let second = ProviderManager(transport: mock, now: { clock.now() }, stateURL: url)
+    do { _ = try await second.lookup(priority: [.ipify]); Issue.record("Expected persisted cooldown") } catch {}
+    #expect(await mock.requests == 1)
+}

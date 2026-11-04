@@ -2,7 +2,7 @@
 
 A native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
 
-**Development preview.** The portable Swift core passes 15 deterministic tests on Linux. Native targets, permissions, widget sharing, and packaging still require successful macOS CI and runtime verification. This is not yet a verified production release. No screenshots are included because the native application has not been run in this environment.
+**Development preview.** The portable Swift core passes 16 deterministic tests on Linux. Native targets, permissions, widget sharing, and packaging still require successful macOS CI and runtime verification. This is not yet a verified production release. No screenshots are included because the native application has not been run in this environment.
 
 ## Features implemented
 

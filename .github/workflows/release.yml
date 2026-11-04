@@ -72,6 +72,9 @@ jobs:
           spctl --assess --type execute --verbose=2 "$APP"
       - name: Package and verify
         run: Scripts/package.sh 'macOS/build/IPPrism.xcarchive/Products/Applications/IP Prism.app'
+      - name: Annotate compiler failures
+        if: failure()
+        run: python3 Scripts/annotate-errors.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: IPPrism-distribution

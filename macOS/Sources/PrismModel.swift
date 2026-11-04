@@ -13,8 +13,8 @@ import PrismCore
     @Published var history: [ChangeEvent] = []
     @Published var health: [ProviderID: ProviderHealth] = [:]
     @Published var selectedTab = "Overview"
-    private let manager = ProviderManager(transport: CredentialTransport())
-    private let ipv6Manager = ProviderManager()
+    private let manager: ProviderManager
+    private let ipv6Manager: ProviderManager
     private let cacheURL: URL
     private let monitor = NWPathMonitor()
     private let historyStore: HistoryStore
@@ -26,6 +26,8 @@ import PrismCore
     init() {
         UserDefaults.standard.register(defaults: ["interval": 60, "volume": 0.25, "quietStart": 22, "quietEnd": 8, "retention": 30, "notifyIP": true, "notifyConnection": false])
         let root = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("IPPrism")
+        manager = ProviderManager(transport: CredentialTransport(), stateURL: root.appendingPathComponent("provider-health.json"))
+        ipv6Manager = ProviderManager(stateURL: root.appendingPathComponent("ipv6-health.json"))
         historyStore = HistoryStore(url: root.appendingPathComponent("history.json"))
         cacheURL = root.appendingPathComponent("current.json")
         if let data = try? Data(contentsOf: cacheURL), let cached = try? JSONDecoder().decode(Intelligence.self, from: data) { current = cached; _ = detector.observe(cached) }
@@ -38,7 +40,7 @@ import PrismCore
         }
         monitor.start(queue: DispatchQueue(label: "IPPrism.network"))
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in self?.restartSchedule() } }
-        sleepObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in self?.schedule?.cancel(); await self?.manager.cancel() } }
+        sleepObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in self?.schedule?.cancel(); await self?.manager.cancel(); await self?.ipv6Manager.cancel() } }
         notifications.onOpen = { if let url = URL(string: "ipprism://details") { NSWorkspace.shared.open(url) } }
         restartSchedule()
     }
@@ -46,7 +48,7 @@ import PrismCore
         let changed = online != connected
         online = connected; self.interface = interface
         debounce?.cancel()
-        if !connected { Task { await manager.cancel() }; error = "Offline · showing cached information" }
+        if !connected { Task { await manager.cancel(); await ipv6Manager.cancel() }; error = "Offline · showing cached information" }
         debounce = Task { [weak self] in
             try? await Task.sleep(for: .seconds(2))
             guard !Task.isCancelled, let self else { return }
