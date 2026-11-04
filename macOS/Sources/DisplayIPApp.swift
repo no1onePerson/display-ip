@@ -29,6 +29,7 @@ import PrismCore
             else { Text(String(label.prefix(48))).monospacedDigit() }
         }.menuBarExtraStyle(.window)
         Window("IP Prism", id: "details") { PrismPanel(model: model) }
+        Window("IP Prism Settings", id: "preferences") { PrismSettings(model: model) }
         Settings { PrismSettings(model: model) }
     }
 }

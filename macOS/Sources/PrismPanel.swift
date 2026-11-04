@@ -10,6 +10,7 @@ struct PrismPanel: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var copied = false
+    @State private var appeared = false
     @State private var search = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -18,7 +19,7 @@ struct PrismPanel: View {
                 VStack(alignment: .leading) { Text("IP Prism").font(.headline); Text(model.online ? "Your connection, in focus" : "Offline · cached information").font(.caption).foregroundStyle(.secondary) }
                 Spacer()
                 Circle().fill(model.online ? .green : .orange).frame(width: 7, height: 7).accessibilityLabel(model.online ? "Online" : "Offline")
-                SettingsLink { Image(systemName: "gearshape") }.buttonStyle(.plain).help("Settings")
+                Button { NSApplication.shared.activate(ignoringOtherApps: true); openWindow(id: "preferences") } label: { Image(systemName: "gearshape") }.buttonStyle(.plain).help("Settings").accessibilityLabel("Open settings")
             }
             if !onboarded {
                 VStack(alignment: .leading, spacing: 12) {
@@ -49,7 +50,7 @@ struct PrismPanel: View {
                 }
             }
             HStack { Text("Local history. No telemetry.").font(.caption2).foregroundStyle(.secondary); Spacer(); Button("Quit") { NSApplication.shared.terminate(nil) }.buttonStyle(.plain).font(.caption) }
-        }.padding(22).frame(width: 490).background(.regularMaterial)
+        }.padding(22).frame(width: 490).background { ZStack { Rectangle().fill(.regularMaterial); LinearGradient(colors: [.cyan.opacity(0.10), .purple.opacity(0.06), .clear], startPoint: .topLeading, endPoint: .bottomTrailing) } }.opacity(appeared || reduceMotion ? 1 : 0.85).scaleEffect(appeared || reduceMotion ? 1 : 0.98).onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) { appeared = true } }
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: model.selectedTab)
             .onOpenURL { url in if url.scheme == "ipprism" { openWindow(id: "details"); NSApplication.shared.activate(ignoringOtherApps: true) } }
             .onChange(of: privacy) { _, _ in model.persistSnapshot() }

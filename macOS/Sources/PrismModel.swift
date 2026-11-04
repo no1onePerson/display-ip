@@ -23,6 +23,7 @@ import PrismCore
     private var detector = ChangeDetector()
     private var cachedDate = Date.distantPast
     private var schedule: Task<Void, Never>?, debounce: Task<Void, Never>?
+    private var pendingNetworkRefresh = false
     private var wakeObserver: NSObjectProtocol?, sleepObserver: NSObjectProtocol?
     let notifications = NotificationService()
     let sounds = SoundService()
@@ -59,7 +60,10 @@ import PrismCore
             if changed, UserDefaults.standard.bool(forKey: "notifyConnection") {
                 if await self.notifications.send(key: connected ? "connected" : "offline", title: connected ? "Connection restored" : "Connection lost", detail: "IP Prism is \(connected ? "online" : "offline").") { self.sounds.play() }
             }
-            if connected { await self.refresh() }
+            if connected {
+                if self.loading { self.pendingNetworkRefresh = true; await self.manager.cancel(); await self.ipv6Manager.cancel() }
+                else { await self.refresh() }
+            }
         }
     }
     func restartSchedule() {
@@ -77,7 +81,10 @@ import PrismCore
     func refresh() async {
         guard !loading, online else { return }
         loading = true
-        defer { loading = false }
+        defer {
+            loading = false
+            if pendingNetworkRefresh && online { pendingNetworkRefresh = false; Task { await self.refresh() } }
+        }
         let d = UserDefaults.standard
         let enabled = ProviderID.allCases.filter { d.object(forKey: "provider.\($0.rawValue)") == nil || d.bool(forKey: "provider.\($0.rawValue)") }
         let preferred = d.string(forKey: "provider") ?? "automatic"
