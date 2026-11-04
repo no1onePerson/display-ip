@@ -1,13 +1,17 @@
-# Design direction
+# Display IP — native Apple-inspired design
 
-An independent, Apple-inspired interface built around clarity, generous space, and restrained detail. No Apple branding or assets are used.
+## Direction
 
-- **Canvas:** soft off-white (#f5f5f7), white cards, fine neutral borders, subtle shadows.
-- **Typography:** native system fonts, oversized headlines, tight display tracking, quiet supporting text.
-- **Accent:** blue (#0071e3) for actions and green for connection status.
-- **Composition:** compact navigation, a spacious introduction, one prominent address card, three supporting details, and a transparent explanation.
-- **Interaction:** refresh the connection, copy the address, and show clear loading, error, and clipboard feedback.
-- **Responsive behavior:** supporting cards stack on small screens; the address wraps for IPv6.
-- **Accessibility:** semantic sections, labeled icon button, visible keyboard focus, live address updates, and status announcements.
+A quiet, glassy utility that belongs in the macOS menu bar. Native SwiftUI materials let the desktop subtly show through. Use semantic foreground colors, rounded typography, SF Symbols, generous spacing, and a clear hierarchy: public address, location, network details, then actions. No imitation title bars or Apple branding.
 
-Keep address provenance explicit. Never invent location, ISP, security, or public-IP data for visual completeness.
+## Surfaces and motion
+
+The menu bar opens a compact 390-point panel with a regular-material backdrop and an ultra-thin-material inner card. A faint border gives depth. Animate address changes with a short 250 ms transition; respect Reduce Motion. Keep loading visible and retain the timestamped previous result on failure. Never show invented location or network details.
+
+## Controls
+
+Native settings use grouped sections for menu bar formatting, provider preference, refresh interval, and system integration. Permission prompts occur when the relevant toggle is enabled. Expose system errors. A hidden menu bar label falls back to a network symbol so the app stays reachable. Widgets show the last successful lookup and its timestamp.
+
+## Release quality gate
+
+Verify contrast, keyboard navigation, VoiceOver, Reduce Transparency, Reduce Motion, dark/light appearance, long IPv6 addresses, permission denial, App Group sharing, and signed installation on macOS before calling a release stable. The initial release is a preview until these checks and notarization are complete.

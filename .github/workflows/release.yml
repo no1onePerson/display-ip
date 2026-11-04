@@ -1,0 +1,46 @@
+name: Build macOS release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: macOS
+        run: xcodegen generate
+      - name: Build universal app
+        run: >-
+          xcodebuild -project macOS/DisplayIP.xcodeproj -scheme DisplayIP
+          -configuration Release -derivedDataPath macOS/build
+          ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO build
+      - name: Package app and disk image
+        run: |
+          set -euo pipefail
+          APP=macOS/build/Build/Products/Release/DisplayIP.app
+          test -d "$APP/Contents/PlugIns/DisplayIPWidget.appex"
+          codesign --force --sign - "$APP/Contents/PlugIns/DisplayIPWidget.appex"
+          codesign --force --sign - "$APP"
+          codesign --verify --deep --strict "$APP"
+          mkdir -p dist staging
+          cp -R "$APP" staging/
+          ln -s /Applications staging/Applications
+          hdiutil create -volname 'Display IP' -srcfolder staging -ov -format UDZO dist/DisplayIP.dmg
+          ditto -c -k --sequesterRsrc --keepParent "$APP" dist/DisplayIP.app.zip
+          shasum -a 256 dist/DisplayIP.dmg dist/DisplayIP.app.zip > dist/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DisplayIP-macOS
+          path: dist/*
+      - name: Publish preview release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* --prerelease --title "Display IP $GITHUB_REF_NAME" --notes "Native macOS menu bar app and widget. Download the DMG and drag DisplayIP to Applications. Requires macOS 14+. Preview build: ad-hoc signed, not Apple notarized; Gatekeeper may block first launch. Widget App Group sharing requires proper Apple Developer signing and must be verified on a Mac."

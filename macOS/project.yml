@@ -1,0 +1,53 @@
+name: DisplayIP
+options:
+  bundleIdPrefix: com.displayip
+  deploymentTarget:
+    macOS: '14.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_APP_SANDBOX: YES
+    ENABLE_HARDENED_RUNTIME: YES
+    MACOSX_DEPLOYMENT_TARGET: '14.0'
+targets:
+  DisplayIP:
+    type: application
+    platform: macOS
+    sources: [Sources, Shared]
+    dependencies:
+      - target: DisplayIPWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.displayip.app
+    info:
+      path: Generated/App-Info.plist
+      properties:
+        LSUIElement: true
+        CFBundleDisplayName: Display IP
+        LSApplicationCategoryType: public.app-category.utilities
+    entitlements:
+      path: Generated/App.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.network.client: true
+        com.apple.security.application-groups: [group.com.displayip.shared]
+  DisplayIPWidget:
+    type: app-extension
+    platform: macOS
+    sources: [Widget, Shared]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.displayip.app.widget
+        SKIP_INSTALL: YES
+    info:
+      path: Generated/Widget-Info.plist
+      properties:
+        CFBundleDisplayName: Display IP
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: Generated/Widget.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.application-groups: [group.com.displayip.shared]
