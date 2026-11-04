@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f5f7"><title>Display IP — A little clarity.</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><a class="brand" href="/" aria-label="Display IP home"><span class="brand-icon">◉</span> display<span class="brand-light">ip</span></a><span class="header-note">A little clarity. A better connection.</span><a class="nav-link" href="#about">About <span>↗</span></a></header>
+<main>
+<div class="eyebrow"><span class="live-dot"></span> YOUR CONNECTION, AT A GLANCE</div>
+<h1>Your place on<br><span>the internet.</span></h1>
+<p class="intro">One small detail. Everything you need to know.<br>Your connection, beautifully simplified.</p>
+<section class="ip-card" aria-labelledby="ip-label">
+<div class="card-top"><span id="ip-label">Connection address</span><span class="pill" id="connection-status">Checking connection</span></div>
+<div class="address-row"><h2 id="ip" aria-live="polite">Connecting…</h2><button id="copy" class="copy-button" disabled aria-label="Copy IP address"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="8" width="12" height="13" rx="3"/><path d="M15 5V4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h1"/></svg></button></div>
+<div class="card-bottom"><span id="address-note">Looking up your connection details.</span><button id="refresh">Refresh address <span>↻</span></button></div>
+</section>
+<div class="details">
+<article><div class="detail-icon">⌘</div><span class="detail-label">PROTOCOL</span><h3 id="protocol">—</h3><p>The language of your connection.</p></article>
+<article><div class="detail-icon">◎</div><span class="detail-label">CONNECTION</span><h3 id="scope">—</h3><p id="scope-note">Directly observed by this server.</p></article>
+<article><div class="detail-icon shield">◇</div><span class="detail-label">PRIVACY FIRST</span><h3>Just the essentials.</h3><p>No trackers. No saved IP history.</p></article>
+</div>
+<section id="about" class="about"><span class="about-symbol">✳</span><div><h2>Small tool. Clear purpose.</h2><p>Display IP shows the address this server sees for your connection. On a local network or behind a proxy, this may differ from your public internet address. Simple, transparent, and made to stay out of your way.</p></div></section>
+</main>
+<footer><span>Designed for a little more clarity.</span><span>Display IP <span class="footer-dot">·</span> Keep it simple.</span></footer>
+<div id="toast" role="status"></div>
+<script type="module" src="/app.js"></script>
+</body></html>
