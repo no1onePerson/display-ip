@@ -6,8 +6,10 @@ import PrismCore
 
 @MainActor final class PrismModel: ObservableObject {
     @Published var current: Intelligence?
-    @Published var ipv4: String?, ipv6: String?
-    @Published var loading = false, online = true
+    @Published var ipv4: String?
+    @Published var ipv6: String?
+    @Published var loading = false
+    @Published var online = true
     @Published var interface = "Unknown"
     @Published var error: String?
     @Published var history: [ChangeEvent] = []
