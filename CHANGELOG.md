@@ -2,7 +2,7 @@
 
 ## 0.4.0 development preview
 
-Renamed the app to IpBan, adopted the user-provided icon, and applied Stitch’s Liquid Clarity direction to the popover, settings, onboarding and widgets. Added a copyable designer handoff and an AppKit-managed settings window with a macOS CI open/close/reopen smoke test. The requested system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
+The app is IpBan. The menu bar gear waits until the panel closes, then opens a retained settings window and brings it forward. Native CI builds and analyzes arm64 and x86_64 together so the core module exists for both slices. The Xcode project, widget, and URL scheme use the IpBan name; the previous URL scheme still opens the app. The system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
 
 ## 0.3.0 development preview
 

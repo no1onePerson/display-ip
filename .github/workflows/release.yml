@@ -45,7 +45,7 @@ jobs:
             security import "$RUNNER_TEMP/signing.p12" -k build.keychain -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign
             security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
             security list-keychains -d user -s build.keychain login.keychain-db
-            xcrun notarytool store-credentials IPPrismNotary --apple-id "$APPLE_ID" --password "$APPLE_APP_PASSWORD" --team-id "$TEAM_ID" --keychain build.keychain
+            xcrun notarytool store-credentials IpBanNotary --apple-id "$APPLE_ID" --password "$APPLE_APP_PASSWORD" --team-id "$TEAM_ID" --keychain build.keychain
             printf '%s' "$APP_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/app.provisionprofile"
             printf '%s' "$WIDGET_PROFILE_BASE64" | base64 --decode > "$RUNNER_TEMP/widget.provisionprofile"
             echo 'SIGNED_RELEASE=true' >> "$GITHUB_ENV"
@@ -55,23 +55,23 @@ jobs:
       - name: Archive Release
         run: |
           set -o pipefail
-          xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism -configuration Release -archivePath macOS/build/IPPrism.xcarchive ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO archive 2>&1 | tee release-build.log
+          xcodebuild -project macOS/IpBan.xcodeproj -scheme IpBan -configuration Release -archivePath macOS/build/IpBan.xcarchive ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO archive 2>&1 | tee release-build.log
       - name: Sign and notarize app
         if: env.SIGNED_RELEASE == 'true'
         run: |
           set -euo pipefail
-          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
+          APP='macOS/build/IpBan.xcarchive/Products/Applications/IpBan.app'
           cp "$RUNNER_TEMP/app.provisionprofile" "$APP/Contents/embedded.provisionprofile"
-          cp "$RUNNER_TEMP/widget.provisionprofile" "$APP/Contents/PlugIns/IPPrismWidget.appex/Contents/embedded.provisionprofile"
-          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IPPrismWidget.entitlements "$APP/Contents/PlugIns/IPPrismWidget.appex"
-          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IPPrism.entitlements "$APP"
+          cp "$RUNNER_TEMP/widget.provisionprofile" "$APP/Contents/PlugIns/IpBanWidget.appex/Contents/embedded.provisionprofile"
+          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IpBanWidget.entitlements "$APP/Contents/PlugIns/IpBanWidget.appex"
+          codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IpBan.entitlements "$APP"
           ditto -c -k --keepParent "$APP" "$RUNNER_TEMP/notarize.zip"
-          xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" --keychain-profile IPPrismNotary --wait
+          xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" --keychain-profile IpBanNotary --wait
           xcrun stapler staple "$APP"
           xcrun stapler validate "$APP"
           spctl --assess --type execute --verbose=2 "$APP"
       - name: Package and verify
-        run: Scripts/package.sh 'macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
+        run: Scripts/package.sh 'macOS/build/IpBan.xcarchive/Products/Applications/IpBan.app'
       - name: Smoke-test settings window
         run: |
           set -euo pipefail
@@ -79,7 +79,7 @@ jobs:
             echo '::warning::No WindowServer is available; settings-window smoke test was skipped.'
             exit 0
           fi
-          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
+          APP='macOS/build/IpBan.xcarchive/Products/Applications/IpBan.app'
           "$APP/Contents/MacOS/IpBan" --smoke-test-settings > settings-smoke.log 2>&1 &
           PID=$!
           for attempt in $(seq 1 30); do
@@ -106,7 +106,7 @@ jobs:
         run: python3 Scripts/annotate-errors.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: IPPrism-distribution
+          name: IpBan-distribution
           path: dist/*
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/')

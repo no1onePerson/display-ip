@@ -11,7 +11,7 @@ import Testing
     #expect(decoded.date == snapshot.date)
 }
 @Test func settingsPersistInIsolatedSuite() throws {
-    let name = "IPPrism.Tests.\(UUID())"
+    let name = "IpBan.Tests.\(UUID())"
     let first = try #require(UserDefaults(suiteName: name))
     defer { first.removePersistentDomain(forName: name) }
     first.set(120, forKey: "interval"); first.set(true, forKey: "privacy")

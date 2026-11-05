@@ -1,6 +1,6 @@
 # Privacy policy
 
-IP Prism does not collect telemetry, analytics, accounts, or usage reports. It contacts selected public IP providers over HTTPS. Those services receive the internet address from which each request arrives and may process or log it under their own policies. Automatic fallback may contact multiple services if earlier requests fail. See Documentation/PROVIDERS.md for every endpoint and verification status.
+IpBan does not collect telemetry, analytics, accounts, or usage reports. It contacts selected public IP providers over HTTPS. Those services receive the internet address from which each request arrives and may process or log it under their own policies. Automatic fallback may contact multiple services if earlier requests fail. See Documentation/PROVIDERS.md for every endpoint and verification status.
 
 The latest IP details and confirmed IP-change history are stored in the application's sandbox Application Support directory. Default history retention is 30 days. A sanitized latest snapshot is shared locally with the widget through an App Group. The optional IPinfo token is stored in macOS Keychain and sent only to IPinfo.
 

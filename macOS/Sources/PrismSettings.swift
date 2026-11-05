@@ -10,6 +10,7 @@ struct PrismSettings: View {
     @AppStorage("menuFormat") private var menuFormat = "Flag + IP"
     @AppStorage("compact") private var compact = true
     @AppStorage("preferIPv6") private var preferIPv6 = false
+    @AppStorage("preferredFamily") private var preferredFamily = "Auto"
     @AppStorage("discoverIPv6") private var discoverIPv6 = true
     @AppStorage("customFormat") private var customFormat = "{flag} {ip}"
     @AppStorage("appearance") private var appearance = "System"
@@ -39,9 +40,9 @@ struct PrismSettings: View {
                 Label("Settings", systemImage: "slider.horizontal.3").font(.headline).padding(.horizontal, 12).padding(.bottom, 12)
                 ForEach(["General", "Menu Bar", "Providers", "Notifications", "Sounds", "History", "Privacy", "Security", "About"], id: \.self) { section in
                     Button { selection = section } label: {
-                        Label(section, systemImage: icon(for: section)).frame(maxWidth: .infinity, minHeight: 32, alignment: .leading).padding(.horizontal, 10).contentShape(Rectangle())
-                    }.buttonStyle(.plain).foregroundStyle(selection == section ? PrismTheme.accent : Color.primary)
-                        .background(selection == section ? Color.primary.opacity(0.09) : Color.clear, in: RoundedRectangle(cornerRadius: 8))
+                        Label(section, systemImage: icon(for: section)).frame(maxWidth: .infinity, minHeight: 36, alignment: .leading).padding(.horizontal, 10).contentShape(Rectangle())
+                    }.buttonStyle(.plain).foregroundStyle(Color.primary)
+                        .background(selection == section ? PrismTheme.accent.opacity(0.16) : Color.clear, in: RoundedRectangle(cornerRadius: 8))
                         .accessibilityAddTraits(selection == section ? .isSelected : [])
                 }
                 Spacer()
@@ -61,7 +62,7 @@ struct PrismSettings: View {
                 }
                 if let error { Text(error).foregroundStyle(.red).font(.caption) }
             }.formStyle(.grouped).frame(maxWidth: .infinity)
-        }.frame(minWidth: 720, idealWidth: 760, minHeight: 560).tint(PrismTheme.accent).task { await refreshPermission() }
+        }.frame(minWidth: 720, idealWidth: 840, minHeight: 520, idealHeight: 600).tint(PrismTheme.accent).task { await refreshPermission() }
             .onChange(of: interval) { _, _ in model.restartSchedule() }
             .onChange(of: privacy) { _, _ in model.persistSnapshot() }
             .onChange(of: retention) { _, _ in model.saveHistory() }
@@ -95,8 +96,12 @@ struct PrismSettings: View {
     }
     var menu: some View {
         Section("Menu bar") {
+            LabeledContent("Sample preview") { Text(menuPreview).monospacedDigit().lineLimit(1) }
+            Text("Sample addresses only. The menu bar shows your real lookup.").font(.caption).foregroundStyle(.secondary)
             Picker("Display", selection: $menuFormat) { ForEach(["IP only", "Flag + IP", "Country + IP", "Flag only", "Icon", "ISP", "Custom"], id: \.self) { Text($0) } }
-            Toggle("Abbreviate long addresses", isOn: $compact); Toggle("Prefer IPv6", isOn: $preferIPv6)
+            Picker("Preferred address", selection: $preferredFamily) { Text("Auto").tag("Auto"); Text("IPv4").tag("IPv4"); Text("IPv6").tag("IPv6") }
+                .onChange(of: preferredFamily) { _, value in preferIPv6 = value == "IPv6" }
+            Toggle("Abbreviate long addresses", isOn: $compact)
             if menuFormat == "Custom" { TextField("Format", text: $customFormat); Text("Tokens: {ip}, {flag}, {country}. Maximum 48 characters displayed.").font(.caption) }
         }
     }
@@ -154,16 +159,33 @@ struct PrismSettings: View {
     }
     var security: some View {
         Section("Internet kill switch") {
-            Label("Unavailable in this build", systemImage: "shield.slash")
-            Text("Blocking all internet traffic after an IP change requires a separately approved and signed macOS network extension. This build does not block traffic. Use your VPN provider’s kill switch for protection.").font(.callout).foregroundStyle(.secondary)
+            Label("Not available in this version", systemImage: "shield.slash")
+            Text("Future concept, not implemented. This build does not block traffic.").font(.callout)
+            Text("A system-wide block would need a separately approved network extension. Use a VPN client’s own kill switch if you need that protection.").font(.caption).foregroundStyle(.secondary)
         }
     }
     var about: some View {
         Section("IpBan") {
-            Label("Your connection, in focus.", systemImage: "pyramid.fill").font(.title2)
-            Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.3.0")")
+            Label("Your connection, in focus.", systemImage: "network").font(.title2)
+            Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.4.0")")
             Link("Source, updates, and releases", destination: URL(string: "https://github.com/no1onePerson/display-ip/releases")!)
             Text("MIT License · Native SwiftUI, Network.framework, and WidgetKit. Provider data is approximate and subject to each service’s terms.").foregroundStyle(.secondary)
+        }
+    }
+    var menuPreview: String {
+        if privacy { return "•••" }
+        let sample4 = "203.0.113.42"
+        let sample6 = "2001:db8::1"
+        let ip = preferredFamily == "IPv6" ? sample6 : sample4
+        let shown = compact && ip.count > 18 ? String(ip.prefix(8)) + "…" + String(ip.suffix(4)) : ip
+        switch menuFormat {
+        case "IP only": return shown
+        case "Country + IP": return "CA \(shown)"
+        case "Flag only": return "CA"
+        case "Icon": return "Network symbol"
+        case "ISP": return "ExampleISP"
+        case "Custom": return customFormat.replacingOccurrences(of: "{ip}", with: shown).replacingOccurrences(of: "{flag}", with: "CA").replacingOccurrences(of: "{country}", with: "CA")
+        default: return shown
         }
     }
     func refreshPermission() async {

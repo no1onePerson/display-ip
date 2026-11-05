@@ -2,11 +2,11 @@
 
 # IpBan برای macOS
 
-![تصویر مفهومی منشور شیشه‌ای IP Prism](Documentation/images/ip-prism-hero.webp)
+![تصویر مفهومی IpBan](Documentation/images/ip-prism-hero.webp)
 
 تصویر بالا یک طرح مفهومی است، نه تصویری از محیط واقعی برنامه.
 
-**IpBan** (نام قبلی: IP Prism) یک برنامهٔ بومی مک برای مشاهده و پایش نشانی اینترنتی عمومی شماست. برنامه در نوار منو قرار می‌گیرد و با استفاده از چند سرویس، اطلاعات موجود دربارهٔ اتصال شما را نمایش می‌دهد. برای استفادهٔ پایه به حساب کاربری یا کلید API نیاز نیست.
+**IpBan** یک برنامهٔ بومی مک برای مشاهده و پایش نشانی اینترنتی عمومی شماست. برنامه در نوار منو قرار می‌گیرد و با استفاده از چند سرویس، اطلاعات موجود دربارهٔ اتصال شما را نمایش می‌دهد. برای استفادهٔ پایه به حساب کاربری یا کلید API نیاز نیست.
 
 [English README](README.md) · [دانلود نسخه‌ها](https://github.com/no1onePerson/display-ip/releases) · [حریم خصوصی](PRIVACY.md)
 
@@ -33,7 +33,7 @@
 
 ## نصب
 
-1. به [صفحهٔ انتشارها](https://github.com/no1onePerson/display-ip/releases) بروید و پس از انتشار موفق، فایل نسخهٔ منتشرشده را دریافت کنید. نسخهٔ جدید با نام `IpBan.dmg` و نسخه‌های قدیمی‌تر با نام IP Prism منتشر شده‌اند.
+1. به [صفحهٔ انتشارها](https://github.com/no1onePerson/display-ip/releases) بروید و پس از انتشار موفق، فایل `IpBan.dmg` را دریافت کنید. نسخه‌های قبل از ۰٫۴٫۰ نام محصول دیگری داشتند.
 2. فایل را باز کنید و **IpBan.app** را به پوشهٔ **Applications** بکشید.
 3. برنامه را اجرا کنید؛ نماد آن در نوار منو ظاهر می‌شود.
 4. برای افزودن ویجت از گزینهٔ **Edit Widgets** در macOS استفاده کنید.
@@ -54,12 +54,13 @@
 
 ## ساخت برای توسعه
 
-برای ساخت برنامه و ویجت به مک، Xcode 16.4 یا جدیدتر و macOS 14 یا جدیدتر نیاز دارید. فایل `macOS/IPPrism.xcodeproj` را باز کنید، طرح **IPPrism** را انتخاب کنید و شناسه‌ها، تیم و App Group متعلق به حساب توسعه‌دهندهٔ خود را تنظیم کنید.
+برای ساخت برنامه و ویجت به مک، Xcode 16.4 یا جدیدتر و macOS 14 یا جدیدتر نیاز دارید. فایل `macOS/IpBan.xcodeproj` را باز کنید، طرح **IpBan** را انتخاب کنید و شناسه‌ها، تیم و App Group متعلق به حساب توسعه‌دهندهٔ خود را تنظیم کنید. دکمهٔ تنظیمات در نوار منو ابتدا پنل را می‌بندد و سپس پنجرهٔ تنظیمات را جلو می‌آورد.
 
 ```bash
 swift test --package-path macOS
-xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism \
-  -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project macOS/IpBan.xcodeproj -scheme IpBan \
+  -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO \
+  ONLY_ACTIVE_ARCH=NO ARCHS="arm64 x86_64" build analyze
 ```
 
 آزمون‌های بخش مشترک Swift روی لینوکس اجرا شده‌اند. وضعیت ساخت، محدودیت‌ها و مواردی که هنوز باید روی مک آزمایش شوند در [گزارش اعتبارسنجی](Documentation/VALIDATION.md) آمده است. بررسی فعلی مستندات و شرایط سرویس‌های خارجی به دلیل محدودیت شبکه کامل نشده است.

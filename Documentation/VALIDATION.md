@@ -11,7 +11,7 @@
 ## macOS CI: 0.4.0-preview.1
 
 - Release workflow passed on macOS: portable core tests, universal Release app and widget build, bundle/plist checks, ad-hoc signature verification, DMG mount and Applications shortcut, ZIP extraction, and checksums.
-- The settings-window smoke test opened, closed, and reopened the retained AppKit window on the macOS runner. This programmatic test does not establish that every settings control works or that the menu bar presentation is visually correct.
+- The settings-window smoke test opens, closes, and reopens the retained AppKit window through the same deferred opener the menu bar gear uses. It still does not click the gear inside MenuBarExtra, and it does not establish that every settings control works or that the menu bar presentation is visually correct.
 - Downloaded the published DMG and ZIP into Linux and verified both published SHA-256 checksums, ZIP integrity, app and widget bundle IDs/version, app icon, and both Mach-O architectures.
 - No Apple Developer ID or notarization credentials were available. The preview is ad-hoc signed, not notarized.
 

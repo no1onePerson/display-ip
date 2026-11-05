@@ -10,6 +10,7 @@ struct PrismPanel: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @State private var copied = false
+    @State private var copyNotice = ""
     @State private var appeared = false
     @State private var search = ""
     @State private var onboardingStep = 0
@@ -18,9 +19,9 @@ struct PrismPanel: View {
     private var statusLabel: String {
         if !model.online { return "Offline" }
         if model.loading { return "Checking…" }
-        if model.error != nil { return "Cached" }
         if model.current == nil { return "Waiting" }
-        return "Available"
+        if model.error != nil || (model.current.map { Date().timeIntervalSince($0.fetchedAt) > 180 } ?? false) { return "Cached" }
+        return "Connected"
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -35,8 +36,14 @@ struct PrismPanel: View {
                     Circle().fill(model.online ? Color.green : Color.orange).frame(width: 7, height: 7)
                     Text(statusLabel).font(.caption.weight(.medium))
                 }.padding(.horizontal, 9).padding(.vertical, 6).background(.thinMaterial, in: Capsule())
-                Button { SettingsWindowController.shared.show(model: model) } label: { Image(systemName: "gearshape").frame(width: 30, height: 30) }
-                    .buttonStyle(.plain).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 9)).help("Settings").accessibilityLabel("Open settings")
+                Button { SettingsOpener.open(model: model) } label: {
+                    Image(systemName: "gearshape").frame(width: 32, height: 32).contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 9))
+                .help("Settings")
+                .accessibilityLabel("Open settings")
+                .keyboardShortcut(",", modifiers: .command)
             }
             if !onboarded {
                 onboarding
@@ -62,17 +69,17 @@ struct PrismPanel: View {
                         default: overview
                         }
                     }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 3)
-                }.frame(height: 360)
+                }.frame(height: 400)
                 if let error = model.error { Label(error, systemImage: "exclamationmark.triangle").font(.caption).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true) }
                 HStack(spacing: 8) {
                     Button { Task { await model.refresh() } } label: { Label("Refresh", systemImage: "arrow.clockwise") }.disabled(model.loading || !model.online).keyboardShortcut("r")
                     if model.loading { ProgressView().controlSize(.small) }
                     Spacer()
-                    Button { copy(model.current?.address.value) } label: { Label(copied ? "Copied" : "Copy IP", systemImage: copied ? "checkmark" : "doc.on.doc") }.buttonStyle(.borderedProminent).tint(PrismTheme.accent).disabled(model.current == nil || privacy)
+                    Button { copy(model.current?.address.value, announcement: "Copied IP") } label: { Label(copyNotice.isEmpty ? "Copy IP" : copyNotice, systemImage: copied ? "checkmark" : "doc.on.doc") }.buttonStyle(.borderedProminent).tint(PrismTheme.accent).disabled(model.current == nil || privacy)
                     Button("Quit") { NSApplication.shared.terminate(nil) }.help("Quit IpBan")
                 }.controlSize(.regular)
             }
-        }.padding(16).frame(width: 410).background {
+        }.padding(16).frame(width: 396).background {
             ZStack {
                 if reduceTransparency { Color(nsColor: .windowBackgroundColor) } else { Rectangle().fill(.regularMaterial) }
                 LinearGradient(colors: [PrismTheme.accent.opacity(0.06), .clear, Color.purple.opacity(0.04)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -80,7 +87,7 @@ struct PrismPanel: View {
         }.opacity(appeared || reduceMotion ? 1 : 0.85).scaleEffect(appeared || reduceMotion ? 1 : 0.98)
             .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) { appeared = true } }
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.18), value: model.selectedTab)
-            .onOpenURL { url in if url.scheme == "ipprism" { openWindow(id: "details"); NSApplication.shared.activate(ignoringOtherApps: true) } }
+            .onOpenURL { url in if url.scheme == "ipban" || url.scheme == "ipprism" { openWindow(id: "details"); NSApplication.shared.setActivationPolicy(.regular); NSApplication.shared.activate(ignoringOtherApps: true) } }
             .onChange(of: privacy) { _, _ in model.persistSnapshot() }
     }
     var onboarding: some View {
@@ -97,10 +104,10 @@ struct PrismPanel: View {
             if onboardingStep == 2 { Toggle("Hide sensitive values", isOn: $privacy).onChange(of: privacy) { _, _ in model.persistSnapshot() } }
             Spacer(minLength: 15)
             HStack {
-                Button("Skip") { onboarded = true }.buttonStyle(.plain).foregroundStyle(.secondary)
+                Button("Not now") { onboarded = true }.buttonStyle(.plain).foregroundStyle(.secondary)
                 Spacer()
                 if onboardingStep > 0 { Button("Back") { onboardingStep -= 1 } }
-                Button(onboardingStep == 2 ? "Get started" : "Continue") { if onboardingStep == 2 { onboarded = true } else { onboardingStep += 1 } }.buttonStyle(.borderedProminent).tint(PrismTheme.accent)
+                Button(onboardingStep == 2 ? "Finish" : "Continue") { if onboardingStep == 2 { onboarded = true } else { onboardingStep += 1 } }.buttonStyle(.borderedProminent).tint(PrismTheme.accent)
             }
         }.padding(16).frame(maxWidth: .infinity, minHeight: 310, alignment: .leading).prismCard()
     }
@@ -140,7 +147,7 @@ struct PrismPanel: View {
             HStack(alignment: .center, spacing: 10) {
                 Text(privacy ? "Hidden" : address ?? "Unavailable").font(.system(size: label == "IPv4" ? 21 : 15, weight: .semibold, design: .monospaced)).textSelection(.enabled).fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
                 if address != nil && !privacy {
-                    Button { copy(address) } label: { Image(systemName: "doc.on.doc").frame(width: 28, height: 28) }.buttonStyle(.plain).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8)).help("Copy \(label) address").accessibilityLabel("Copy \(label) address")
+                    Button { copy(address, announcement: "Copied \(label)") } label: { Image(systemName: copied && copyNotice == "Copied \(label)" ? "checkmark" : "doc.on.doc").frame(width: 28, height: 28) }.buttonStyle(.plain).background(.thinMaterial, in: RoundedRectangle(cornerRadius: 8)).help("Copy \(label) address").accessibilityLabel("Copy \(label) address")
                 }
             }
         }.padding(14).prismCard()
@@ -178,8 +185,8 @@ struct PrismPanel: View {
             if model.history.isEmpty { ContentUnavailableView("No changes yet", systemImage: "clock", description: Text("Changes appear after two consecutive matching observations.")) }
             ForEach(model.history.filter { search.isEmpty || $0.current.address.value.contains(search) || ($0.current.city ?? "").localizedCaseInsensitiveContains(search) }) { event in
                 VStack(alignment: .leading, spacing: 4) {
-                    Label(privacy ? "Address hidden" : event.current.address.value, systemImage: "arrow.triangle.branch").font(.headline)
-                    Text(privacy ? "Previous address hidden" : "From \(event.previous.value)").font(.caption).foregroundStyle(.secondary)
+                    Label(privacy ? "Address hidden" : "\(event.previous.family == .v4 ? "IPv4" : "IPv6") \(event.current.address.value)", systemImage: "arrow.triangle.branch").font(.headline)
+                    Text(privacy ? "Previous address hidden" : "\(event.previous.value) → \(event.current.address.value)").font(.system(.caption, design: .monospaced)).foregroundStyle(.secondary).textSelection(.enabled)
                     Text(event.date, style: .date).font(.caption2)
                     Text(event.reason).font(.caption2).foregroundStyle(.secondary)
                 }; Divider()
@@ -188,17 +195,22 @@ struct PrismPanel: View {
     }
     var designer: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Design handoff").font(.headline)
-            Text("A copyable description of the current app and its states. This summary contains no personal connection data.").font(.caption).foregroundStyle(.secondary)
+            Text("Design specification").font(.headline)
+            Text("Contains no personal IP addresses, location details, or credentials.").font(.caption).foregroundStyle(.secondary)
             Text(DesignerHandoff.text).font(.callout).textSelection(.enabled)
-            Button { copy(DesignerHandoff.text) } label: { Label(copied ? "Copied" : "Copy handoff", systemImage: copied ? "checkmark" : "doc.on.doc") }
+            Button { copy(DesignerHandoff.text, announcement: "Copied specification") } label: { Label(copyNotice == "Copied specification" ? "Copied specification" : "Copy specification", systemImage: copyNotice == "Copied specification" ? "checkmark" : "doc.on.doc") }
         }
     }
     func row(_ title: String, _ value: String?) -> some View {
-        HStack(alignment: .top) { Text(title).foregroundStyle(.secondary); Spacer(); Text(privacy ? "Hidden" : value ?? "Unavailable").multilineTextAlignment(.trailing).textSelection(.enabled) }.font(.callout).contextMenu { Button("Copy value") { copy(value) }.disabled(value == nil || privacy) }
+        HStack(alignment: .top) { Text(title).foregroundStyle(.secondary); Spacer(); Text(privacy ? "Hidden" : value ?? "Unavailable").multilineTextAlignment(.trailing).textSelection(.enabled) }.font(.callout).contextMenu { Button("Copy value") { copy(value, announcement: "Copied \(title)") }.disabled(value == nil || privacy) }
     }
-    func copy(_ value: String?) {
-        guard let value else { return }; NSPasteboard.general.clearContents(); NSPasteboard.general.setString(value, forType: .string); copied = true
-        Task { try? await Task.sleep(for: .seconds(2)); copied = false }
+    func copy(_ value: String?, announcement: String) {
+        guard let value else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(value, forType: .string)
+        copied = true
+        copyNotice = announcement
+        AccessibilityNotification.Announcement(announcement).post()
+        Task { try? await Task.sleep(for: .seconds(2)); copied = false; copyNotice = "" }
     }
 }

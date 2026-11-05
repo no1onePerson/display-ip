@@ -27,6 +27,7 @@
 "CODE_SIGN_STYLE" = "Automatic";
 "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 "DEBUG_INFORMATION_FORMAT" = "dwarf";
+"ONLY_ACTIVE_ARCH" = "NO";
 "SWIFT_ACTIVE_COMPILATION_CONDITIONS" = "DEBUG";
 };
 "name" = "Debug";
@@ -43,6 +44,7 @@
 "CODE_SIGN_STYLE" = "Automatic";
 "SWIFT_OPTIMIZATION_LEVEL" = "-O";
 "DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
+"ONLY_ACTIVE_ARCH" = "NO";
 };
 "name" = "Release";
 };
@@ -59,7 +61,7 @@
 "path" = "Sources/DesignerHandoff.swift";
 "sourceTree" = "<group>";
 };
-"0D6A4134B45A7538AEB329E9" = {
+"97EA8392B8F1162E41142DA0" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "626C371531E08CA5E8DE2851";
 };
@@ -69,7 +71,7 @@
 "path" = "Sources/DisplayIPApp.swift";
 "sourceTree" = "<group>";
 };
-"69BE27D8022A78E0D0EF4F41" = {
+"E439D4FBD5966978A8C4A0D3" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "47940630041ED827A4E87763";
 };
@@ -79,7 +81,7 @@
 "path" = "Sources/PrismAppDelegate.swift";
 "sourceTree" = "<group>";
 };
-"4CEF8D8053C85EED05805CBD" = {
+"09A78ABD3B1F296F63C8EDB5" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "CF62564EB89F62E2C9FC6C5E";
 };
@@ -89,7 +91,7 @@
 "path" = "Sources/PrismModel.swift";
 "sourceTree" = "<group>";
 };
-"CF341748FE66B0ACF8DB0F49" = {
+"3551D3B316962D8DC00DD842" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "BE68FFEAA9E1153B7E1A72B7";
 };
@@ -99,7 +101,7 @@
 "path" = "Sources/PrismPanel.swift";
 "sourceTree" = "<group>";
 };
-"B661C83BD836D7AF6FDD25CA" = {
+"B09F6950EADBCC85E5F9192C" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "DC07A8E28F23DA2E85D104F8";
 };
@@ -109,7 +111,7 @@
 "path" = "Sources/PrismSettings.swift";
 "sourceTree" = "<group>";
 };
-"E34FC974E21A106546254D1B" = {
+"7AD1BA14121D2450BABBFD38" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "18CEAB5E5C77D815816147C8";
 };
@@ -119,7 +121,7 @@
 "path" = "Sources/PrismTheme.swift";
 "sourceTree" = "<group>";
 };
-"EAF055F9F74BEE1466BB890A" = {
+"B78BD38BB884CD2A9A77E4A0" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "52C8BB3B0438A20879FDE3AD";
 };
@@ -129,7 +131,7 @@
 "path" = "Sources/SettingsWindowController.swift";
 "sourceTree" = "<group>";
 };
-"0D0957B3F702DEF1610B2932" = {
+"25A5E7E2F6F588C11BDC0FDC" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "AFD742CDB0B978890DB9D922";
 };
@@ -139,7 +141,7 @@
 "path" = "Sources/SystemServices.swift";
 "sourceTree" = "<group>";
 };
-"B94B16C225D09FC7FBB0EDC1" = {
+"6E42336C1F2FC5436617BE95" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "1A9B9B46A9FEC3F02C29E982";
 };
@@ -149,30 +151,30 @@
 "path" = "Shared/Snapshot.swift";
 "sourceTree" = "<group>";
 };
-"8D859917DA44349D09DCB664" = {
+"36E9D89B87D690C4E58E78F8" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "5B507E9E4952D2447B4FB3D8";
 };
-"06B38E429579BCE41DEA8621" = {
+"1EFFDC33C9973B811EA07D9D" = {
 "isa" = "PBXSourcesBuildPhase";
 "buildActionMask" = "2147483647";
-"files" = ("0D6A4134B45A7538AEB329E9",
-"69BE27D8022A78E0D0EF4F41",
-"4CEF8D8053C85EED05805CBD",
-"CF341748FE66B0ACF8DB0F49",
-"B661C83BD836D7AF6FDD25CA",
-"E34FC974E21A106546254D1B",
-"EAF055F9F74BEE1466BB890A",
-"0D0957B3F702DEF1610B2932",
-"B94B16C225D09FC7FBB0EDC1",
-"8D859917DA44349D09DCB664");
+"files" = ("97EA8392B8F1162E41142DA0",
+"E439D4FBD5966978A8C4A0D3",
+"09A78ABD3B1F296F63C8EDB5",
+"3551D3B316962D8DC00DD842",
+"B09F6950EADBCC85E5F9192C",
+"7AD1BA14121D2450BABBFD38",
+"B78BD38BB884CD2A9A77E4A0",
+"25A5E7E2F6F588C11BDC0FDC",
+"6E42336C1F2FC5436617BE95",
+"36E9D89B87D690C4E58E78F8");
 "runOnlyForDeploymentPostprocessing" = "0";
 };
 "5B2D2E1CD1EA09990CD4EACE" = {
 "isa" = "PBXBuildFile";
 "productRef" = "F5AE27228AC34400DE4A3768";
 };
-"E9828E578FD4E5CEA5266195" = {
+"374E48ECB6D01F0059E2ABE3" = {
 "isa" = "PBXFrameworksBuildPhase";
 "buildActionMask" = "2147483647";
 "files" = ("5B2D2E1CD1EA09990CD4EACE");
@@ -188,13 +190,13 @@
 "isa" = "PBXBuildFile";
 "fileRef" = "8BF729FFE074CAEE622C0292";
 };
-"FC17841512293E083A4F618C" = {
+"AA14BB42EAB2C2423BA568F3" = {
 "isa" = "PBXResourcesBuildPhase";
 "buildActionMask" = "2147483647";
 "files" = ("5522B3B3B2EACC1C8F9BEAAC");
 "runOnlyForDeploymentPostprocessing" = "0";
 };
-"7A5B87A68969B3F0BD209405" = {
+"23A1BFB2DE33EEB5456499A7" = {
 "isa" = "PBXFileReference";
 "explicitFileType" = "wrapper.application";
 "includeInIndex" = "0";
@@ -203,7 +205,7 @@
 };
 "33BBDD894EEB20345437CED7" = {
 "isa" = "PBXBuildFile";
-"fileRef" = "81F671FD1E75B9808B8A26DC";
+"fileRef" = "0D27EE5DFFF3BFFDDC4D8952";
 "settings" = {
 "ATTRIBUTES" = ("RemoveHeadersOnCopy");
 };
@@ -221,27 +223,28 @@
 "isa" = "PBXContainerItemProxy";
 "containerPortal" = "244210E48437B6556980A702";
 "proxyType" = "1";
-"remoteGlobalIDString" = "84D72FB6B7C048E18ECE8608";
-"remoteInfo" = "IPPrismWidget";
+"remoteGlobalIDString" = "F80D87E9086D8F10ABD2ED80";
+"remoteInfo" = "IpBanWidget";
 };
 "A4C2D386AB0259F33DCDC427" = {
 "isa" = "PBXTargetDependency";
-"target" = "84D72FB6B7C048E18ECE8608";
+"target" = "F80D87E9086D8F10ABD2ED80";
 "targetProxy" = "01E77404E10F254C43E64C55";
 };
-"AA3EEDA504FB52E130C0D4E7" = {
+"CF887CE800758EAB5B115855" = {
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
 "PRODUCT_NAME" = "IpBan";
-"INFOPLIST_FILE" = "Configuration/IPPrism.plist";
-"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
+"INFOPLIST_FILE" = "Configuration/IpBan.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IpBan.entitlements";
 "MARKETING_VERSION" = "0.4.0";
 "CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "NO";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
 "GENERATE_INFOPLIST_FILE" = "NO";
+"ONLY_ACTIVE_ARCH" = "NO";
 "ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 "DEBUG_INFORMATION_FORMAT" = "dwarf";
@@ -249,44 +252,45 @@
 };
 "name" = "Debug";
 };
-"2E8DEE7F1912B44031E2C2BF" = {
+"F88572681B2A4758CA1E1DF1" = {
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
 "PRODUCT_NAME" = "IpBan";
-"INFOPLIST_FILE" = "Configuration/IPPrism.plist";
-"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
+"INFOPLIST_FILE" = "Configuration/IpBan.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IpBan.entitlements";
 "MARKETING_VERSION" = "0.4.0";
 "CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "NO";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
 "GENERATE_INFOPLIST_FILE" = "NO";
+"ONLY_ACTIVE_ARCH" = "NO";
 "ASSETCATALOG_COMPILER_APPICON_NAME" = "AppIcon";
 "SWIFT_OPTIMIZATION_LEVEL" = "-O";
 "DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
 };
 "name" = "Release";
 };
-"C58D70B4B49802D7B4F6E917" = {
+"A9745350D8B0F50BC7236E42" = {
 "isa" = "XCConfigurationList";
-"buildConfigurations" = ("AA3EEDA504FB52E130C0D4E7",
-"2E8DEE7F1912B44031E2C2BF");
+"buildConfigurations" = ("CF887CE800758EAB5B115855",
+"F88572681B2A4758CA1E1DF1");
 "defaultConfigurationIsVisible" = "0";
 "defaultConfigurationName" = "Release";
 };
-"8CFD4E10E0FF34CB178F4223" = {
+"37D733CFF3625299C7138989" = {
 "isa" = "PBXNativeTarget";
-"buildConfigurationList" = "C58D70B4B49802D7B4F6E917";
-"buildPhases" = ("06B38E429579BCE41DEA8621",
-"E9828E578FD4E5CEA5266195",
-"FC17841512293E083A4F618C",
+"buildConfigurationList" = "A9745350D8B0F50BC7236E42";
+"buildPhases" = ("1EFFDC33C9973B811EA07D9D",
+"374E48ECB6D01F0059E2ABE3",
+"AA14BB42EAB2C2423BA568F3",
 "6105FBB0CA6322F1D3A595D2");
 "buildRules" = ();
 "dependencies" = ("A4C2D386AB0259F33DCDC427");
-"name" = "IPPrism";
-"productName" = "IPPrism";
-"productReference" = "7A5B87A68969B3F0BD209405";
+"name" = "IpBan";
+"productName" = "IpBan";
+"productReference" = "23A1BFB2DE33EEB5456499A7";
 "productType" = "com.apple.product-type.application";
 "packageProductDependencies" = ("F5AE27228AC34400DE4A3768");
 };
@@ -296,53 +300,54 @@
 "path" = "Widget/DisplayIPWidget.swift";
 "sourceTree" = "<group>";
 };
-"071AD27609FE3C9C16EE1B7A" = {
+"9232A6486B4A7D43B61CDB6D" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "4BDE52B3446002B09EEA5D92";
 };
-"7D4AF66E067D9134418778B9" = {
+"60CAC7B11350B51B31E7D217" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "5B507E9E4952D2447B4FB3D8";
 };
-"EE2564D131369D0C98A68B12" = {
+"CF71A614AC117DC41EC89ED6" = {
 "isa" = "PBXSourcesBuildPhase";
 "buildActionMask" = "2147483647";
-"files" = ("071AD27609FE3C9C16EE1B7A",
-"7D4AF66E067D9134418778B9");
+"files" = ("9232A6486B4A7D43B61CDB6D",
+"60CAC7B11350B51B31E7D217");
 "runOnlyForDeploymentPostprocessing" = "0";
 };
-"CC3CA1F78EC8C3173D0BAB63" = {
+"90949E06AAC38B6C5D23E5E0" = {
 "isa" = "PBXFrameworksBuildPhase";
 "buildActionMask" = "2147483647";
 "files" = ();
 "runOnlyForDeploymentPostprocessing" = "0";
 };
-"3090CE6368440527D65E1F5D" = {
+"C756CCA4B9F0AE5BFC1778C2" = {
 "isa" = "PBXResourcesBuildPhase";
 "buildActionMask" = "2147483647";
 "files" = ();
 "runOnlyForDeploymentPostprocessing" = "0";
 };
-"81F671FD1E75B9808B8A26DC" = {
+"0D27EE5DFFF3BFFDDC4D8952" = {
 "isa" = "PBXFileReference";
 "explicitFileType" = "wrapper.app-extension";
 "includeInIndex" = "0";
-"path" = "IPPrismWidget.appex";
+"path" = "IpBanWidget.appex";
 "sourceTree" = "BUILT_PRODUCTS_DIR";
 };
-"8393A0E9D7D4BA1CF7C6390F" = {
+"4F5CB8FCE8EA64B4A59FB597" = {
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app.widget";
-"PRODUCT_NAME" = "IPPrismWidget";
-"INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
-"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
+"PRODUCT_NAME" = "IpBanWidget";
+"INFOPLIST_FILE" = "Configuration/IpBanWidget.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IpBanWidget.entitlements";
 "MARKETING_VERSION" = "0.4.0";
 "CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "YES";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
 "GENERATE_INFOPLIST_FILE" = "NO";
+"ONLY_ACTIVE_ARCH" = "NO";
 "APPLICATION_EXTENSION_API_ONLY" = "YES";
 "SWIFT_OPTIMIZATION_LEVEL" = "-Onone";
 "DEBUG_INFORMATION_FORMAT" = "dwarf";
@@ -350,49 +355,50 @@
 };
 "name" = "Debug";
 };
-"0F35CEA409BAEAA27267179F" = {
+"04CAC93BEACD98CFB750961A" = {
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app.widget";
-"PRODUCT_NAME" = "IPPrismWidget";
-"INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
-"CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
+"PRODUCT_NAME" = "IpBanWidget";
+"INFOPLIST_FILE" = "Configuration/IpBanWidget.plist";
+"CODE_SIGN_ENTITLEMENTS" = "Configuration/IpBanWidget.entitlements";
 "MARKETING_VERSION" = "0.4.0";
 "CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "YES";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
 "GENERATE_INFOPLIST_FILE" = "NO";
+"ONLY_ACTIVE_ARCH" = "NO";
 "APPLICATION_EXTENSION_API_ONLY" = "YES";
 "SWIFT_OPTIMIZATION_LEVEL" = "-O";
 "DEBUG_INFORMATION_FORMAT" = "dwarf-with-dsym";
 };
 "name" = "Release";
 };
-"62ECF19E93E3907EABFD06DD" = {
+"5CACDC544783C6269DB6DC7E" = {
 "isa" = "XCConfigurationList";
-"buildConfigurations" = ("8393A0E9D7D4BA1CF7C6390F",
-"0F35CEA409BAEAA27267179F");
+"buildConfigurations" = ("4F5CB8FCE8EA64B4A59FB597",
+"04CAC93BEACD98CFB750961A");
 "defaultConfigurationIsVisible" = "0";
 "defaultConfigurationName" = "Release";
 };
-"84D72FB6B7C048E18ECE8608" = {
+"F80D87E9086D8F10ABD2ED80" = {
 "isa" = "PBXNativeTarget";
-"buildConfigurationList" = "62ECF19E93E3907EABFD06DD";
-"buildPhases" = ("EE2564D131369D0C98A68B12",
-"CC3CA1F78EC8C3173D0BAB63",
-"3090CE6368440527D65E1F5D");
+"buildConfigurationList" = "5CACDC544783C6269DB6DC7E";
+"buildPhases" = ("CF71A614AC117DC41EC89ED6",
+"90949E06AAC38B6C5D23E5E0",
+"C756CCA4B9F0AE5BFC1778C2");
 "buildRules" = ();
 "dependencies" = ();
-"name" = "IPPrismWidget";
-"productName" = "IPPrismWidget";
-"productReference" = "81F671FD1E75B9808B8A26DC";
+"name" = "IpBanWidget";
+"productName" = "IpBanWidget";
+"productReference" = "0D27EE5DFFF3BFFDDC4D8952";
 "productType" = "com.apple.product-type.app-extension";
 };
 "0A3E27B8CA818264D75C8D81" = {
 "isa" = "PBXGroup";
-"children" = ("7A5B87A68969B3F0BD209405",
-"81F671FD1E75B9808B8A26DC");
+"children" = ("23A1BFB2DE33EEB5456499A7",
+"0D27EE5DFFF3BFFDDC4D8952");
 "name" = "Products";
 "sourceTree" = "<group>";
 };
@@ -429,8 +435,8 @@
 "projectDirPath" = "";
 "projectRoot" = "";
 "packageReferences" = ("BC4A71180870F7945155FBB0");
-"targets" = ("8CFD4E10E0FF34CB178F4223",
-"84D72FB6B7C048E18ECE8608");
+"targets" = ("37D733CFF3625299C7138989",
+"F80D87E9086D8F10ABD2ED80");
 };
 };
 "rootObject" = "244210E48437B6556980A702";

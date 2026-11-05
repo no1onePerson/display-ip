@@ -6,9 +6,9 @@
 
 *Concept artwork, not a screenshot of the application.*
 
-Formerly IP Prism. A native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
+IpBan is a native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
 
-**Development preview.** The macOS build and a settings-window open/close/reopen smoke test passed in CI. Widgets, permissions, visual behavior, and installation still need hands-on Mac validation. The screenshots below are Stitch design mockups, not captures of the running app. The portable Swift core has 16 deterministic tests.
+**Development preview.** Native CI builds and analyzes both arm64 and x86_64. A settings-window open/close/reopen smoke test runs on release. Widgets, permissions, visual behavior, and installation still need hands-on Mac validation. The screenshots below are Stitch design mockups, not captures of the running app. The portable Swift core has 16 deterministic tests.
 
 ## Features implemented
 
@@ -37,15 +37,17 @@ The [Stitch design brief](Documentation/Stitch/ipBan_STITCH_DESIGN.md) and expor
 
 ## Install
 
-Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). The renamed app is packaged as `IpBan.dmg` and `IpBan.zip`; open the DMG and drag **IpBan.app** to **Applications**. Older releases are named IP Prism.
+Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). Open `IpBan.dmg` and drag **IpBan.app** to **Applications**. `IpBan.zip` is published with the same build. Downloads from before the 0.4.0 preview used an earlier product name.
 
 Read the release's signing status. Development artifacts are ad-hoc signed, not Apple-notarized; Gatekeeper can block them. Do not disable Gatekeeper. Signed distribution requires the provisioning and notarization setup described in [Release instructions](Documentation/RELEASE.md).
 
-Add desktop widgets using macOS **Edit Widgets → IpBan**. Keep the application running to refresh cached data. WidgetKit controls delivery timing; widgets are not continuously live. Both targets must have the same provisioned App Group for reliable sharing.
+Add desktop widgets using macOS **Edit Widgets → IpBan**. If you added a widget from an earlier build, remove it and add IpBan again. Keep the application running to refresh cached data. WidgetKit controls delivery timing; widgets are not continuously live. Both targets must have the same provisioned App Group for reliable sharing.
+
+Settings opens in its own window. The menu bar panel closes first, then the settings window comes forward. Use the gear, or press Command-Comma while IpBan is active.
 
 ## Development
 
-Open `macOS/IPPrism.xcodeproj` in Xcode 16.4 or newer. Choose the IPPrism scheme and your team. Register or replace the app and widget identifiers and shared App Group before signing. The generated project is committed and has no third-party runtime dependencies.
+Open `macOS/IpBan.xcodeproj` in Xcode 16.4 or newer. Choose the IpBan scheme and your team. Register or replace the app and widget identifiers and shared App Group before signing. The generated project is committed and has no third-party runtime dependencies.
 
 ```sh
 # Portable core, on macOS or Linux with Swift 6:
@@ -55,8 +57,9 @@ swift test --package-path macOS
 python3 Scripts/generate-project.py
 
 # Build both native targets on macOS:
-xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism \
-  -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project macOS/IpBan.xcodeproj -scheme IpBan \
+  -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO \
+  ONLY_ACTIVE_ARCH=NO ARCHS="arm64 x86_64" build analyze
 ```
 
 The project generator is the source of truth for bundle identifiers, version, entitlements, and file membership. Run it after adding native source files. App icon artwork can be regenerated with `python3 Scripts/generate-icon.py` (development-only dependency: Pillow).

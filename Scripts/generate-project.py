@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate a deterministic Xcode project without external dependencies."""
-import hashlib, json, pathlib, plistlib
+import hashlib, json, pathlib, plistlib, shutil
 root = pathlib.Path(__file__).resolve().parents[1] / 'macOS'
 objects = {}
 def uid(name): return hashlib.sha256(name.encode()).hexdigest()[:24].upper()
@@ -18,13 +18,13 @@ base = {'SWIFT_VERSION':'6.0','SWIFT_STRICT_CONCURRENCY':'complete','MACOSX_DEPL
 def configs(name, extra):
     entries=[]
     for mode in ['Debug','Release']:
-        settings={**extra,'SWIFT_OPTIMIZATION_LEVEL':'-Onone' if mode=='Debug' else '-O','DEBUG_INFORMATION_FORMAT':'dwarf' if mode=='Debug' else 'dwarf-with-dsym'}
+        settings={**extra,'SWIFT_OPTIMIZATION_LEVEL':'-Onone' if mode=='Debug' else '-O','DEBUG_INFORMATION_FORMAT':'dwarf' if mode=='Debug' else 'dwarf-with-dsym','ONLY_ACTIVE_ARCH':'NO'}
         if mode=='Debug': settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS']='DEBUG'
         entries.append(add(name+mode,'XCBuildConfiguration',buildSettings=settings,name=mode))
     return add(name+'configs','XCConfigurationList',buildConfigurations=entries,defaultConfigurationIsVisible=0,defaultConfigurationName='Release')
 project_configs=configs('project',base)
 (root/'Configuration').mkdir(exist_ok=True)
-for target, dirs, product, bundle, extension in [('IPPrism',['Sources','Shared'],'IpBan.app','com.displayip.app',False),('IPPrismWidget',['Widget','Shared'],'IPPrismWidget.appex','com.displayip.app.widget',True)]:
+for target, dirs, product, bundle, extension in [('IpBan',['Sources','Shared'],'IpBan.app','com.displayip.app',False),('IpBanWidget',['Widget','Shared'],'IpBanWidget.appex','com.displayip.app.widget',True)]:
     sources=[]
     for directory in dirs:
         for path in sorted((root/directory).glob('*.swift')):
@@ -43,30 +43,34 @@ for target, dirs, product, bundle, extension in [('IPPrism',['Sources','Shared']
     product_ref=add(target+'product','PBXFileReference',explicitFileType='wrapper.app-extension' if extension else 'wrapper.application',includeInIndex=0,path=product,sourceTree='BUILT_PRODUCTS_DIR'); products.append(product_ref)
     info={'CFBundleDisplayName':'IpBan','CFBundleIdentifier':'$(PRODUCT_BUNDLE_IDENTIFIER)','CFBundleExecutable':'$(EXECUTABLE_NAME)','CFBundleName':'$(PRODUCT_NAME)','CFBundlePackageType':'XPC!' if extension else 'APPL','CFBundleShortVersionString':'$(MARKETING_VERSION)','CFBundleVersion':'$(CURRENT_PROJECT_VERSION)','LSMinimumSystemVersion':'$(MACOSX_DEPLOYMENT_TARGET)'}
     if extension: info['NSExtension']={'NSExtensionPointIdentifier':'com.apple.widgetkit-extension'}
-    else: info.update(CFBundleURLTypes=[{'CFBundleURLName':'IpBan','CFBundleURLSchemes':['ipprism']}],LSUIElement=True,LSApplicationCategoryType='public.app-category.utilities',CFBundleIconFile='AppIcon')
+    else: info.update(CFBundleURLTypes=[{'CFBundleURLName':'IpBan','CFBundleURLSchemes':['ipban','ipprism']}],LSUIElement=True,LSApplicationCategoryType='public.app-category.utilities',CFBundleIconFile='AppIcon')
     entitlements={'com.apple.security.app-sandbox':True,'com.apple.security.application-groups':['group.com.displayip.shared']}
     if not extension: entitlements.update({'com.apple.security.network.client':True,'com.apple.security.files.user-selected.read-write':True})
     for suffix, data in [('plist',info),('entitlements',entitlements)]:
         (root/'Configuration'/f'{target}.{suffix}').write_bytes(plistlib.dumps(data))
-    settings={'PRODUCT_BUNDLE_IDENTIFIER':bundle,'PRODUCT_NAME':'IPPrismWidget' if extension else 'IpBan','INFOPLIST_FILE':f'Configuration/{target}.plist','CODE_SIGN_ENTITLEMENTS':f'Configuration/{target}.entitlements','MARKETING_VERSION':'0.4.0','CURRENT_PROJECT_VERSION':'4','SKIP_INSTALL':'YES' if extension else 'NO','LD_RUNPATH_SEARCH_PATHS':'$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks','ENABLE_APP_SANDBOX':'YES','GENERATE_INFOPLIST_FILE':'NO'}
+    settings={'PRODUCT_BUNDLE_IDENTIFIER':bundle,'PRODUCT_NAME':'IpBanWidget' if extension else 'IpBan','INFOPLIST_FILE':f'Configuration/{target}.plist','CODE_SIGN_ENTITLEMENTS':f'Configuration/{target}.entitlements','MARKETING_VERSION':'0.4.0','CURRENT_PROJECT_VERSION':'4','SKIP_INSTALL':'YES' if extension else 'NO','LD_RUNPATH_SEARCH_PATHS':'$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks','ENABLE_APP_SANDBOX':'YES','GENERATE_INFOPLIST_FILE':'NO','ONLY_ACTIVE_ARCH':'NO'}
     if extension: settings['APPLICATION_EXTENSION_API_ONLY']='YES'
     else: settings['ASSETCATALOG_COMPILER_APPICON_NAME']='AppIcon'
     phases=[source_phase,frameworks,resource_phase]
     dependencies=[]
     if not extension:
-        embedfile=add('widget-embed-file','PBXBuildFile',fileRef=uid('IPPrismWidgetproduct'),settings={'ATTRIBUTES':['RemoveHeadersOnCopy']})
+        embedfile=add('widget-embed-file','PBXBuildFile',fileRef=uid('IpBanWidgetproduct'),settings={'ATTRIBUTES':['RemoveHeadersOnCopy']})
         phases.append(add('widget-embed','PBXCopyFilesBuildPhase',buildActionMask=2147483647,dstPath='',dstSubfolderSpec=13,files=[embedfile],name='Embed App Extensions',runOnlyForDeploymentPostprocessing=0))
-        proxy=add('widget-proxy','PBXContainerItemProxy',containerPortal=uid('project'),proxyType=1,remoteGlobalIDString=uid('IPPrismWidget'),remoteInfo='IPPrismWidget')
-        dependencies.append(add('widget-dependency','PBXTargetDependency',target=uid('IPPrismWidget'),targetProxy=proxy))
+        proxy=add('widget-proxy','PBXContainerItemProxy',containerPortal=uid('project'),proxyType=1,remoteGlobalIDString=uid('IpBanWidget'),remoteInfo='IpBanWidget')
+        dependencies.append(add('widget-dependency','PBXTargetDependency',target=uid('IpBanWidget'),targetProxy=proxy))
     fields=dict(buildConfigurationList=configs(target,settings),buildPhases=phases,buildRules=[],dependencies=dependencies,name=target,productName=target,productReference=product_ref,productType='com.apple.product-type.app-extension' if extension else 'com.apple.product-type.application')
     if not extension: fields['packageProductDependencies']=[core]
     add(target,'PBXNativeTarget',**fields)
 product_group=add('products','PBXGroup',children=products,name='Products',sourceTree='<group>')
 main=add('main','PBXGroup',children=main_children+[product_group],sourceTree='<group>')
-add('project','PBXProject',attributes={'LastUpgradeCheck':'1600'},buildConfigurationList=project_configs,compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','Base'],mainGroup=main,productRefGroup=product_group,projectDirPath='',projectRoot='',packageReferences=[package],targets=[uid('IPPrism'),uid('IPPrismWidget')])
-project=root/'IPPrism.xcodeproj'; project.mkdir(exist_ok=True)
+add('project','PBXProject',attributes={'LastUpgradeCheck':'1600'},buildConfigurationList=project_configs,compatibilityVersion='Xcode 14.0',developmentRegion='en',hasScannedForEncodings=0,knownRegions=['en','Base'],mainGroup=main,productRefGroup=product_group,projectDirPath='',projectRoot='',packageReferences=[package],targets=[uid('IpBan'),uid('IpBanWidget')])
+project=root/'IpBan.xcodeproj'; project.mkdir(exist_ok=True)
 (project/'project.pbxproj').write_text('// !$*UTF8*$!\n'+quote({'archiveVersion':1,'classes':{},'objectVersion':56,'objects':objects,'rootObject':uid('project')})+'\n')
 schemes=project/'xcshareddata/xcschemes'; schemes.mkdir(parents=True,exist_ok=True)
-(schemes/'IPPrism.xcscheme').write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
-<Scheme LastUpgradeVersion="1600" version="1.3"><BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{uid('IPPrism')}" BuildableName="IpBan.app" BlueprintName="IPPrism" ReferencedContainer="container:IPPrism.xcodeproj"/></BuildActionEntry></BuildActionEntries></BuildAction><LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{uid('IPPrism')}" BuildableName="IpBan.app" BlueprintName="IPPrism" ReferencedContainer="container:IPPrism.xcodeproj"/></BuildableProductRunnable></LaunchAction><AnalyzeAction buildConfiguration="Debug"/><ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"/></Scheme>''')
+(schemes/'IpBan.xcscheme').write_text(f'''<?xml version="1.0" encoding="UTF-8"?>
+<Scheme LastUpgradeVersion="1600" version="1.3"><BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES"><BuildActionEntries><BuildActionEntry buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES" buildForAnalyzing="YES"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{uid('IpBan')}" BuildableName="IpBan.app" BlueprintName="IpBan" ReferencedContainer="container:IpBan.xcodeproj"/></BuildActionEntry></BuildActionEntries></BuildAction><LaunchAction buildConfiguration="Debug" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.IDEFoundation.Launcher.LLDB" launchStyle="0" useCustomWorkingDirectory="NO" ignoresPersistentStateOnLaunch="NO" debugDocumentVersioning="YES" debugServiceExtension="internal" allowLocationSimulation="YES"><BuildableProductRunnable runnableDebuggingMode="0"><BuildableReference BuildableIdentifier="primary" BlueprintIdentifier="{uid('IpBan')}" BuildableName="IpBan.app" BlueprintName="IpBan" ReferencedContainer="container:IpBan.xcodeproj"/></BuildableProductRunnable></LaunchAction><AnalyzeAction buildConfiguration="Debug"/><ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES"/></Scheme>''')
+legacy=root/'IPPrism.xcodeproj'
+if legacy.exists(): shutil.rmtree(legacy)
+for stale in ['IPPrism.plist','IPPrism.entitlements','IPPrismWidget.plist','IPPrismWidget.entitlements']:
+    (root/'Configuration'/stale).unlink(missing_ok=True)
 print(project)

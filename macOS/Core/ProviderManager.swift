@@ -14,7 +14,7 @@ public struct URLSessionTransport: HTTPTransport {
     public init() {}
     public func fetch(_ url: URL, timeout: TimeInterval) async throws -> HTTPResult {
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: timeout)
-        request.setValue("IPPrism/0.3", forHTTPHeaderField: "User-Agent")
+        request.setValue("IpBan/0.4", forHTTPHeaderField: "User-Agent")
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let http = response as? HTTPURLResponse else { throw LookupError.malformed }
         return HTTPResult(data: data, status: http.statusCode, retryAfter: http.value(forHTTPHeaderField: "Retry-After"))

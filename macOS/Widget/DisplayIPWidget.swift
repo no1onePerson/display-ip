@@ -55,7 +55,7 @@ struct PrismWidgetView: View {
                 Spacer(minLength: 0)
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .containerBackground(.regularMaterial, for: .widget).widgetURL(URL(string: "ipprism://details"))
+            .containerBackground(.regularMaterial, for: .widget).widgetURL(URL(string: "ipban://details"))
     }
     func widgetAddress(_ label: String, _ value: String?) -> some View {
         VStack(alignment: .leading, spacing: 5) {
@@ -67,9 +67,9 @@ struct PrismWidgetView: View {
         HStack { Text(label).foregroundStyle(.secondary); Spacer(); Text(value?.isEmpty == false ? value ?? "Unavailable" : "Unavailable").lineLimit(1) }.font(.caption)
     }
 }
-@main struct IPPrismWidget: Widget {
+@main struct IpBanWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "IPPrism", provider: Provider()) { PrismWidgetView(entry: $0) }
+        StaticConfiguration(kind: "IpBan", provider: Provider()) { PrismWidgetView(entry: $0) }
             .configurationDisplayName("IpBan").description("Your last successful connection lookup. Updates are scheduled by macOS.").supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

@@ -15,7 +15,7 @@ jobs:
       - name: Check project reproducibility
         run: |
           python3 Scripts/generate-project.py
-          git diff --exit-code -- macOS/IPPrism.xcodeproj macOS/Configuration
+          git diff --exit-code -- macOS/IpBan.xcodeproj macOS/Configuration
       - name: Test core
         run: |
           set -o pipefail
@@ -23,7 +23,8 @@ jobs:
       - name: Build and analyze native targets
         run: |
           set -o pipefail
-          xcodebuild -project macOS/IPPrism.xcodeproj -scheme IPPrism -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO build analyze 2>&1 | tee native-build.log
+          # Build both slices before analyze. Debug used to emit only arm64 PrismCore, then x86_64 analysis failed to import it.
+          xcodebuild -project macOS/IpBan.xcodeproj -scheme IpBan -configuration Debug -derivedDataPath macOS/build CODE_SIGNING_ALLOWED=NO ONLY_ACTIVE_ARCH=NO ARCHS="arm64 x86_64" build analyze 2>&1 | tee native-build.log
       - name: Annotate compiler failures
         if: failure()
         run: python3 Scripts/annotate-errors.py

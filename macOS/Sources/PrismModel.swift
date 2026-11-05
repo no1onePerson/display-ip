@@ -28,8 +28,19 @@ import PrismCore
     let notifications = NotificationService()
     let sounds = SoundService()
     init() {
-        UserDefaults.standard.register(defaults: ["interval": 60, "volume": 0.25, "quietStart": 22, "quietEnd": 8, "retention": 30, "notifyIP": true, "notifyConnection": false, "discoverIPv6": true])
-        let root = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("IPPrism")
+        let storedFamily = UserDefaults.standard.object(forKey: "preferredFamily")
+        let legacyPreferIPv6 = UserDefaults.standard.bool(forKey: "preferIPv6")
+        UserDefaults.standard.register(defaults: ["interval": 60, "volume": 0.25, "quietStart": 22, "quietEnd": 8, "retention": 30, "notifyIP": true, "notifyConnection": false, "discoverIPv6": true, "preferredFamily": "Auto"])
+        if storedFamily == nil, legacyPreferIPv6 {
+            UserDefaults.standard.set("IPv6", forKey: "preferredFamily")
+        }
+        let support = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let root = support.appendingPathComponent("IpBan", isDirectory: true)
+        let legacy = support.appendingPathComponent("IPPrism", isDirectory: true)
+        if !FileManager.default.fileExists(atPath: root.path), FileManager.default.fileExists(atPath: legacy.path) {
+            try? FileManager.default.moveItem(at: legacy, to: root)
+        }
+        try? FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         manager = ProviderManager(transport: CredentialTransport(), stateURL: root.appendingPathComponent("provider-health.json"))
         ipv6Manager = ProviderManager(stateURL: root.appendingPathComponent("ipv6-health.json"))
         historyStore = HistoryStore(url: root.appendingPathComponent("history.json"))
@@ -42,10 +53,10 @@ import PrismCore
             let type = path.usesInterfaceType(.wifi) ? "Wi-Fi" : path.usesInterfaceType(.wiredEthernet) ? "Ethernet" : path.usesInterfaceType(.cellular) ? "Cellular" : "Other"
             Task { @MainActor in self?.networkChanged(connected, interface: type) }
         }
-        monitor.start(queue: DispatchQueue(label: "IPPrism.network"))
+        monitor.start(queue: DispatchQueue(label: "IpBan.network"))
         wakeObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didWakeNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in self?.restartSchedule() } }
         sleepObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.willSleepNotification, object: nil, queue: .main) { [weak self] _ in Task { @MainActor in self?.schedule?.cancel(); await self?.manager.cancel(); await self?.ipv6Manager.cancel() } }
-        notifications.onOpen = { if let url = URL(string: "ipprism://details") { NSWorkspace.shared.open(url) } }
+        notifications.onOpen = { if let url = URL(string: "ipban://details") { NSWorkspace.shared.open(url) } }
         restartSchedule()
     }
     func networkChanged(_ connected: Bool, interface: String) {
@@ -127,7 +138,7 @@ import PrismCore
     func clearAll() { try? FileManager.default.removeItem(at: cacheURL); clearHistory(); current = nil; ipv4 = nil; ipv6 = nil; detector = ChangeDetector(); Snapshot.clear(); WidgetCenter.shared.reloadAllTimelines() }
     func resetHealth() async { await manager.resetStatistics(); health = await manager.diagnostics() }
     func exportHistory(csv: Bool) {
-        let panel = NSSavePanel(); panel.nameFieldStringValue = csv ? "IPPrism-history.csv" : "IPPrism-history.json"
+        let panel = NSSavePanel(); panel.nameFieldStringValue = csv ? "IpBan-history.csv" : "IpBan-history.json"
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do { let data = csv ? Data(HistoryStore.csv(history).utf8) : try JSONEncoder().encode(history); try data.write(to: url, options: .atomic) } catch { self.error = error.localizedDescription }
     }

@@ -69,8 +69,10 @@ import PrismCore
 }
 
 enum KeychainStore {
+    private static let service = "IpBan"
+    private static let legacyService = "IPPrism"
     static func set(_ secret: String, account: String) throws {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: "IPPrism", kSecAttrAccount as String: account]
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account]
         let deletion = SecItemDelete(query as CFDictionary)
         guard deletion == errSecSuccess || deletion == errSecItemNotFound else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(deletion)) }
         if secret.isEmpty { return }
@@ -78,11 +80,14 @@ enum KeychainStore {
         let status = SecItemAdd(item as CFDictionary, nil)
         guard status == errSecSuccess else { throw NSError(domain: NSOSStatusErrorDomain, code: Int(status)) }
     }
-}
-
-extension KeychainStore {
     static func get(account: String) -> String? {
-        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: "IPPrism", kSecAttrAccount as String: account, kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
+        if let modern = read(service: service, account: account) { return modern }
+        guard let legacy = read(service: legacyService, account: account) else { return nil }
+        try? set(legacy, account: account)
+        return legacy
+    }
+    private static func read(service: String, account: String) -> String? {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword, kSecAttrService as String: service, kSecAttrAccount as String: account, kSecReturnData as String: true, kSecMatchLimit as String: kSecMatchLimitOne]
         var result: CFTypeRef?
         guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess, let data = result as? Data else { return nil }
         return String(data: data, encoding: .utf8)

@@ -23,6 +23,7 @@
 			<string>IpBan</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>ipban</string>
 				<string>ipprism</string>
 			</array>
 		</dict>

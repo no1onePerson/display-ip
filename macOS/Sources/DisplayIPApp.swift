@@ -1,17 +1,24 @@
 import SwiftUI
 import PrismCore
 
-@main struct IPPrismApp: App {
+@main struct IpBanApp: App {
     @NSApplicationDelegateAdaptor(PrismAppDelegate.self) private var appDelegate
     @StateObject private var model = PrismModel()
     @AppStorage("menuFormat") private var format = "Flag + IP"
     @AppStorage("privacy") private var privacy = false
     @AppStorage("compact") private var compact = true
-    @AppStorage("preferIPv6") private var preferIPv6 = false
+    @AppStorage("preferredFamily") private var preferredFamily = "Auto"
     @AppStorage("appearance") private var appearance = "System"
+    var preferredAddress: String? {
+        switch preferredFamily {
+        case "IPv4": return model.ipv4
+        case "IPv6": return model.ipv6
+        default: return model.ipv4 ?? model.ipv6
+        }
+    }
     var label: String {
-        if privacy { return "IpBan" }
-        let ip = (preferIPv6 ? model.ipv6 ?? model.ipv4 : model.ipv4 ?? model.ipv6) ?? "IpBan"
+        if privacy { return "•••" }
+        let ip = preferredAddress ?? "IpBan"
         let short = compact && ip.count > 18 ? String(ip.prefix(8)) + "…" + String(ip.suffix(4)) : ip
         switch format {
         case "IP only": return short
@@ -26,10 +33,15 @@ import PrismCore
         MenuBarExtra {
             PrismPanel(model: model).preferredColorScheme(appearance == "Dark" ? .dark : appearance == "Light" ? .light : nil)
         } label: {
-            if format == "Icon" { Image(systemName: "network").symbolRenderingMode(.monochrome) }
-            else { Text(String(label.prefix(48))).monospacedDigit() }
+            if format == "Icon" { Image(systemName: privacy ? "hand.raised" : "network").symbolRenderingMode(.monochrome).help(privacy ? "Privacy mode" : "IpBan") }
+            else { Text(String(label.prefix(48))).monospacedDigit().help(privacy ? "Privacy mode" : (preferredAddress ?? "IpBan")) }
         }.menuBarExtraStyle(.window)
         Window("IpBan", id: "details") { PrismPanel(model: model) }
-        Settings { PrismSettings(model: model) }
+            .commands {
+                CommandGroup(replacing: .appSettings) {
+                    Button("Settings…") { SettingsOpener.open(model: model) }
+                        .keyboardShortcut(",", modifiers: .command)
+                }
+            }
     }
 }
