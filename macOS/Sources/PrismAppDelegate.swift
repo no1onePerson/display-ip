@@ -21,6 +21,7 @@ import Foundation
             guard let window = await self.waitForSettings() else { self.smokeFail("Settings window failed to open") }
             SmokeTrace.mark("close")
             window.close()
+            SmokeTrace.mark("closed")
             try? await Task.sleep(for: .milliseconds(200))
             SmokeTrace.mark("reopen")
             SettingsOpener.open(model: model)

@@ -60,8 +60,7 @@ enum SmokeTrace {
             preferences.hidesOnDeactivate = false
             preferences.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
             window = preferences
-            // AppKit delivers this on the main thread. A block that calls
-            // MainActor.assumeIsolated traps on the Xcode 16.4 runtime.
+            // Xcode 16.4 traps if AppKit enters a MainActor-isolated @objc method.
             NotificationCenter.default.addObserver(self, selector: #selector(settingsWindowWillClose(_:)), name: NSWindow.willCloseNotification, object: preferences)
         } else if let hosting = window?.contentViewController as? NSHostingController<PrismSettings> {
             hosting.rootView = PrismSettings(model: model)
@@ -71,11 +70,17 @@ enum SmokeTrace {
         window?.orderFrontRegardless()
     }
 
-    @objc private func settingsWindowWillClose(_ notification: Notification) {
-        guard let settings = window, notification.object as AnyObject? === settings else { return }
+    @objc nonisolated private func settingsWindowWillClose(_: Notification) {
+        SmokeTrace.mark("will-close")
+        guard !CommandLine.arguments.contains("--smoke-test-settings") else { return }
+        Task { @MainActor in self.returnToMenuBarIfIdle() }
+    }
+
+    private func returnToMenuBarIfIdle() {
+        guard let settings = window else { return }
         let others = NSApplication.shared.windows.contains { candidate in
             candidate !== settings && candidate.isVisible && candidate.canBecomeKey
         }
-        if !others, !SettingsOpener.smokeTest { NSApplication.shared.setActivationPolicy(.accessory) }
+        if !others { NSApplication.shared.setActivationPolicy(.accessory) }
     }
 }
