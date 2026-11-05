@@ -35,7 +35,18 @@ struct PrismSettings: View {
     @State private var keyStatus = ""
     var body: some View {
         HStack(spacing: 0) {
-            List { ForEach(["General", "Menu Bar", "Providers", "Notifications", "Sounds", "History", "Privacy", "About"], id: \.self) { section in Button(section) { selection = section }.buttonStyle(.plain).fontWeight(selection == section ? .semibold : .regular).padding(.vertical, 5) } }.frame(width: 155)
+            VStack(alignment: .leading, spacing: 4) {
+                Label("Settings", systemImage: "slider.horizontal.3").font(.headline).padding(.horizontal, 12).padding(.bottom, 12)
+                ForEach(["General", "Menu Bar", "Providers", "Notifications", "Sounds", "History", "Privacy", "Security", "About"], id: \.self) { section in
+                    Button { selection = section } label: {
+                        Label(section, systemImage: icon(for: section)).frame(maxWidth: .infinity, minHeight: 32, alignment: .leading).padding(.horizontal, 10).contentShape(Rectangle())
+                    }.buttonStyle(.plain).foregroundStyle(selection == section ? PrismTheme.accent : Color.primary)
+                        .background(selection == section ? Color.primary.opacity(0.09) : Color.clear, in: RoundedRectangle(cornerRadius: 8))
+                        .accessibilityAddTraits(selection == section ? .isSelected : [])
+                }
+                Spacer()
+                Text("IpBan · macOS").font(.caption2).foregroundStyle(.secondary).padding(10)
+            }.padding(12).frame(width: 205).background(.thinMaterial)
             Form {
                 switch selection {
                 case "Menu Bar": menu
@@ -44,16 +55,30 @@ struct PrismSettings: View {
                 case "Sounds": sounds
                 case "History": history
                 case "Privacy": privacySettings
+                case "Security": security
                 case "About": about
                 default: general
                 }
                 if let error { Text(error).foregroundStyle(.red).font(.caption) }
             }.formStyle(.grouped).frame(maxWidth: .infinity)
-        }.frame(width: 720, height: 560).task { await refreshPermission() }
+        }.frame(minWidth: 720, idealWidth: 760, minHeight: 560).tint(PrismTheme.accent).task { await refreshPermission() }
             .onChange(of: interval) { _, _ in model.restartSchedule() }
             .onChange(of: privacy) { _, _ in model.persistSnapshot() }
             .onChange(of: retention) { _, _ in model.saveHistory() }
             .confirmationDialog("Delete all cached addresses and history?", isPresented: $confirmClear) { Button("Delete local data", role: .destructive) { model.clearAll() } }
+    }
+    func icon(for section: String) -> String {
+        switch section {
+        case "Menu Bar": "menubar.rectangle"
+        case "Providers": "server.rack"
+        case "Notifications": "bell"
+        case "Sounds": "speaker.wave.2"
+        case "History": "clock.arrow.circlepath"
+        case "Privacy": "hand.raised"
+        case "Security": "shield"
+        case "About": "info.circle"
+        default: "gearshape"
+        }
     }
     var general: some View {
         Section("General") {
@@ -127,8 +152,14 @@ struct PrismSettings: View {
             Button("Delete cached data and history…", role: .destructive) { confirmClear = true }
         }
     }
+    var security: some View {
+        Section("Internet kill switch") {
+            Label("Unavailable in this build", systemImage: "shield.slash")
+            Text("Blocking all internet traffic after an IP change requires a separately approved and signed macOS network extension. This build does not block traffic. Use your VPN provider’s kill switch for protection.").font(.callout).foregroundStyle(.secondary)
+        }
+    }
     var about: some View {
-        Section("IP Prism") {
+        Section("IpBan") {
             Label("Your connection, in focus.", systemImage: "pyramid.fill").font(.title2)
             Text("Version \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0.3.0")")
             Link("Source, updates, and releases", destination: URL(string: "https://github.com/no1onePerson/display-ip/releases")!)

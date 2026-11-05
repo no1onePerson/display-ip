@@ -53,6 +53,16 @@
 "defaultConfigurationIsVisible" = "0";
 "defaultConfigurationName" = "Release";
 };
+"626C371531E08CA5E8DE2851" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/DesignerHandoff.swift";
+"sourceTree" = "<group>";
+};
+"0D6A4134B45A7538AEB329E9" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "626C371531E08CA5E8DE2851";
+};
 "47940630041ED827A4E87763" = {
 "isa" = "PBXFileReference";
 "lastKnownFileType" = "sourcecode.swift";
@@ -62,6 +72,16 @@
 "69BE27D8022A78E0D0EF4F41" = {
 "isa" = "PBXBuildFile";
 "fileRef" = "47940630041ED827A4E87763";
+};
+"CF62564EB89F62E2C9FC6C5E" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/PrismAppDelegate.swift";
+"sourceTree" = "<group>";
+};
+"4CEF8D8053C85EED05805CBD" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "CF62564EB89F62E2C9FC6C5E";
 };
 "BE68FFEAA9E1153B7E1A72B7" = {
 "isa" = "PBXFileReference";
@@ -93,6 +113,26 @@
 "isa" = "PBXBuildFile";
 "fileRef" = "18CEAB5E5C77D815816147C8";
 };
+"52C8BB3B0438A20879FDE3AD" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/PrismTheme.swift";
+"sourceTree" = "<group>";
+};
+"EAF055F9F74BEE1466BB890A" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "52C8BB3B0438A20879FDE3AD";
+};
+"AFD742CDB0B978890DB9D922" = {
+"isa" = "PBXFileReference";
+"lastKnownFileType" = "sourcecode.swift";
+"path" = "Sources/SettingsWindowController.swift";
+"sourceTree" = "<group>";
+};
+"0D0957B3F702DEF1610B2932" = {
+"isa" = "PBXBuildFile";
+"fileRef" = "AFD742CDB0B978890DB9D922";
+};
 "1A9B9B46A9FEC3F02C29E982" = {
 "isa" = "PBXFileReference";
 "lastKnownFileType" = "sourcecode.swift";
@@ -116,10 +156,14 @@
 "06B38E429579BCE41DEA8621" = {
 "isa" = "PBXSourcesBuildPhase";
 "buildActionMask" = "2147483647";
-"files" = ("69BE27D8022A78E0D0EF4F41",
+"files" = ("0D6A4134B45A7538AEB329E9",
+"69BE27D8022A78E0D0EF4F41",
+"4CEF8D8053C85EED05805CBD",
 "CF341748FE66B0ACF8DB0F49",
 "B661C83BD836D7AF6FDD25CA",
 "E34FC974E21A106546254D1B",
+"EAF055F9F74BEE1466BB890A",
+"0D0957B3F702DEF1610B2932",
 "B94B16C225D09FC7FBB0EDC1",
 "8D859917DA44349D09DCB664");
 "runOnlyForDeploymentPostprocessing" = "0";
@@ -154,7 +198,7 @@
 "isa" = "PBXFileReference";
 "explicitFileType" = "wrapper.application";
 "includeInIndex" = "0";
-"path" = "IP Prism.app";
+"path" = "IpBan.app";
 "sourceTree" = "BUILT_PRODUCTS_DIR";
 };
 "33BBDD894EEB20345437CED7" = {
@@ -189,11 +233,11 @@
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
-"PRODUCT_NAME" = "IP Prism";
+"PRODUCT_NAME" = "IpBan";
 "INFOPLIST_FILE" = "Configuration/IPPrism.plist";
 "CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
-"MARKETING_VERSION" = "0.3.0";
-"CURRENT_PROJECT_VERSION" = "3";
+"MARKETING_VERSION" = "0.4.0";
+"CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "NO";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
@@ -209,11 +253,11 @@
 "isa" = "XCBuildConfiguration";
 "buildSettings" = {
 "PRODUCT_BUNDLE_IDENTIFIER" = "com.displayip.app";
-"PRODUCT_NAME" = "IP Prism";
+"PRODUCT_NAME" = "IpBan";
 "INFOPLIST_FILE" = "Configuration/IPPrism.plist";
 "CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrism.entitlements";
-"MARKETING_VERSION" = "0.3.0";
-"CURRENT_PROJECT_VERSION" = "3";
+"MARKETING_VERSION" = "0.4.0";
+"CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "NO";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
@@ -293,8 +337,8 @@
 "PRODUCT_NAME" = "IPPrismWidget";
 "INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
 "CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
-"MARKETING_VERSION" = "0.3.0";
-"CURRENT_PROJECT_VERSION" = "3";
+"MARKETING_VERSION" = "0.4.0";
+"CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "YES";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
@@ -313,8 +357,8 @@
 "PRODUCT_NAME" = "IPPrismWidget";
 "INFOPLIST_FILE" = "Configuration/IPPrismWidget.plist";
 "CODE_SIGN_ENTITLEMENTS" = "Configuration/IPPrismWidget.entitlements";
-"MARKETING_VERSION" = "0.3.0";
-"CURRENT_PROJECT_VERSION" = "3";
+"MARKETING_VERSION" = "0.4.0";
+"CURRENT_PROJECT_VERSION" = "4";
 "SKIP_INSTALL" = "YES";
 "LD_RUNPATH_SEARCH_PATHS" = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
 "ENABLE_APP_SANDBOX" = "YES";
@@ -354,10 +398,14 @@
 };
 "0D6E4079E36703EBD37C0072" = {
 "isa" = "PBXGroup";
-"children" = ("47940630041ED827A4E87763",
+"children" = ("626C371531E08CA5E8DE2851",
+"47940630041ED827A4E87763",
+"CF62564EB89F62E2C9FC6C5E",
 "BE68FFEAA9E1153B7E1A72B7",
 "DC07A8E28F23DA2E85D104F8",
 "18CEAB5E5C77D815816147C8",
+"52C8BB3B0438A20879FDE3AD",
+"AFD742CDB0B978890DB9D922",
 "1A9B9B46A9FEC3F02C29E982",
 "5B507E9E4952D2447B4FB3D8",
 "8BF729FFE074CAEE622C0292",

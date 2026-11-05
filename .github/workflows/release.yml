@@ -1,4 +1,4 @@
-name: IP Prism release
+name: IpBan release
 on:
   push:
     tags: ['v*']
@@ -28,7 +28,7 @@ jobs:
           if [[ "$GITHUB_REF" == refs/tags/* ]]; then
             python3 - "$GITHUB_REF_NAME" <<'PY'
           import re,sys
-          assert re.fullmatch(r'v0\.3\.0(?:-[A-Za-z0-9.-]+)?', sys.argv[1]), 'Tag must match project version 0.3.0'
+          assert re.fullmatch(r'v0\.4\.0(?:-[A-Za-z0-9.-]+)?', sys.argv[1]), 'Tag must match project version 0.4.0'
           PY
           fi
           swift test --package-path macOS
@@ -60,7 +60,7 @@ jobs:
         if: env.SIGNED_RELEASE == 'true'
         run: |
           set -euo pipefail
-          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IP Prism.app'
+          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
           cp "$RUNNER_TEMP/app.provisionprofile" "$APP/Contents/embedded.provisionprofile"
           cp "$RUNNER_TEMP/widget.provisionprofile" "$APP/Contents/PlugIns/IPPrismWidget.appex/Contents/embedded.provisionprofile"
           codesign --force --options runtime --timestamp --sign "$SIGNING_IDENTITY" --entitlements macOS/Configuration/IPPrismWidget.entitlements "$APP/Contents/PlugIns/IPPrismWidget.appex"
@@ -71,7 +71,36 @@ jobs:
           xcrun stapler validate "$APP"
           spctl --assess --type execute --verbose=2 "$APP"
       - name: Package and verify
-        run: Scripts/package.sh 'macOS/build/IPPrism.xcarchive/Products/Applications/IP Prism.app'
+        run: Scripts/package.sh 'macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
+      - name: Smoke-test settings window
+        run: |
+          set -euo pipefail
+          if ! pgrep -x WindowServer >/dev/null; then
+            echo '::warning::No WindowServer is available; settings-window smoke test was skipped.'
+            exit 0
+          fi
+          APP='macOS/build/IPPrism.xcarchive/Products/Applications/IpBan.app'
+          "$APP/Contents/MacOS/IpBan" --smoke-test-settings > settings-smoke.log 2>&1 &
+          PID=$!
+          for attempt in $(seq 1 30); do
+            if ! kill -0 "$PID" 2>/dev/null; then break; fi
+            sleep 1
+          done
+          if kill -0 "$PID" 2>/dev/null; then
+            kill "$PID" || true
+            echo '::error::Settings-window smoke test timed out.'
+            exit 1
+          fi
+          if ! wait "$PID"; then
+            cat settings-smoke.log
+            echo '::error::IpBan exited with an error during the settings-window smoke test.'
+            exit 1
+          fi
+          if ! grep -q IPBAN_SETTINGS_SMOKE_OK settings-smoke.log; then
+            cat settings-smoke.log
+            echo '::error::Settings-window smoke test did not finish successfully.'
+            exit 1
+          fi
       - name: Annotate compiler failures
         if: failure()
         run: python3 Scripts/annotate-errors.py
@@ -85,11 +114,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$SIGNED_RELEASE" = true ]; then
-            NOTES='Developer ID signed and Apple notarized. macOS 14+. Download the DMG and drag IP Prism to Applications.'
+            NOTES='Developer ID signed and Apple notarized. macOS 14+. Download the DMG and drag IpBan to Applications.'
           else
             NOTES='Development preview. Ad-hoc signed, NOT Developer ID signed or Apple notarized. Gatekeeper may block installation. App Group widget sharing requires proper signing. macOS 14+.'
           fi
-          gh release create "$GITHUB_REF_NAME" dist/* --prerelease --title "IP Prism $GITHUB_REF_NAME" --notes "$NOTES"
+          gh release create "$GITHUB_REF_NAME" dist/* --prerelease --title "IpBan $GITHUB_REF_NAME" --notes "$NOTES"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: failure()
         with:

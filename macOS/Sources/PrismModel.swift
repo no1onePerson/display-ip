@@ -58,7 +58,7 @@ import PrismCore
             try? await Task.sleep(for: .seconds(2))
             guard !Task.isCancelled, let self else { return }
             if changed, UserDefaults.standard.bool(forKey: "notifyConnection") {
-                if await self.notifications.send(key: connected ? "connected" : "offline", title: connected ? "Connection restored" : "Connection lost", detail: "IP Prism is \(connected ? "online" : "offline").") { self.sounds.play() }
+                if await self.notifications.send(key: connected ? "connected" : "offline", title: connected ? "Connection restored" : "Connection lost", detail: "IpBan is \(connected ? "online" : "offline").") { self.sounds.play() }
             }
             if connected {
                 if self.loading { self.pendingNetworkRefresh = true; await self.manager.cancel(); await self.ipv6Manager.cancel() }

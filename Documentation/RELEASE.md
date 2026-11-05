@@ -1,6 +1,6 @@
 # Build, sign, and distribute
 
-The committed project targets macOS 14, Swift 6, and both arm64/x86_64. CI uses Xcode 16.4 on macos-15. Main/PR workflows test the core, build native targets, and run Xcode analysis. Release tags must match the marketing version; the current pattern is `v0.3.0` or `v0.3.0-preview.N`. Update the generator and workflow together for a new version.
+The committed project targets macOS 14, Swift 6, and both arm64/x86_64. CI uses Xcode 16.4 on macos-15. Main/PR workflows test the core, build native targets, and run Xcode analysis. Release tags must match the marketing version; the current pattern is `v0.4.0` or `v0.4.0-preview.N`. Update the generator and workflow together for a new version.
 
 ## Developer ID setup
 
@@ -20,6 +20,6 @@ With no certificate configured, the workflow creates an **ad-hoc signed developm
 
 ## Outputs and verification
 
-`dist/IPPrism.dmg`, `dist/IPPrism.zip`, `dist/SHA256SUMS.txt` are produced only after a successful macOS build. Packaging verifies the app executable, embedded widget, plists, signature, ZIP extraction, DMG mount, Applications symlink, and checksum consistency. A signed run also requires notarization/stapling/Gatekeeper checks. The DMG includes an Applications shortcut and installation text; it does not yet have a custom Finder-positioned background layout.
+`dist/IpBan.dmg`, `dist/IpBan.zip`, `dist/SHA256SUMS.txt` are produced only after a successful macOS build. Packaging verifies the app executable, embedded widget, plists, signature, ZIP extraction, DMG mount, Applications symlink, and checksum consistency. A signed run also requires notarization/stapling/Gatekeeper checks. The DMG includes an Applications shortcut and installation text; it does not yet have a custom Finder-positioned background layout.
 
 The release is always a prerelease pending manual GUI validation. macOS CI does not prove first-launch dialogs, rendering, sound, widget installation, or App Group behavior. Perform the checklist in VALIDATION.md on a clean Mac before marking a release stable. Manual workflow dispatch builds artifacts without publishing a release; tag pushes publish a prerelease after successful gates.

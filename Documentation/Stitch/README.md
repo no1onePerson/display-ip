@@ -1,0 +1,3 @@
+# Stitch design references
+
+Retrieved from the user-provided Stitch project `2917233538056668316` through its MCP server. `popover`, `settings`, and `widget-onboarding` each contain a generated image and HTML source; `ipBan_STITCH_DESIGN.md` is the supplied design brief. These are design mockups, not captures of the current application. Any sample addresses, measurements, VPN claims, performance statements, and controls in the exports are illustrative and are not assertions about the application. The application implements the design in native SwiftUI and WidgetKit; it does not run these HTML files.

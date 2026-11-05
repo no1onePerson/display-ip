@@ -1,4 +1,4 @@
-# IP Prism for macOS
+# IpBan for macOS
 
 [فارسی](README.fa.md) | English
 
@@ -6,13 +6,13 @@
 
 *Concept artwork, not a screenshot of the application.*
 
-A native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
+Formerly IP Prism. A native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
 
-**Development preview.** The portable Swift core passes 16 deterministic tests on Linux. Native targets, permissions, widget sharing, and packaging still require successful macOS CI and runtime verification. This is not yet a verified production release. No screenshots are included because the native application has not been run in this environment.
+**Development preview.** This build needs macOS validation, including the settings window, widgets and permissions. The screenshots below are Stitch design mockups, not captures of the running app. The portable Swift core has 16 deterministic tests.
 
 ## Features implemented
 
-- Frosted system-material panel with Overview, Network, Location, Providers, and History sections.
+- Stitch-inspired frosted popover with separate IPv4 and IPv6 cards and Overview, Network, Location, Providers, History, and Designer sections.
 - Eight provider adapters, optional fields, automatic fallback or manual selection, priority and enable controls.
 - Timeouts, jittered backoff, Retry-After, cooldowns, circuit breaker, budgets, deduplication, caching, cancellation, and health diagnostics.
 - Normalized IPv4/IPv6, independent family comparison, two-observation change confirmation, IPv6-only discovery (enabled by default).
@@ -21,17 +21,27 @@ A native menu bar companion that puts your public connection in focus. Built wit
 - Contextual notifications, permission state, quiet hours, privacy mode, and synthesized original sounds.
 - Login-item controls using SMAppService; Keychain storage for an optional IPinfo token.
 - Small, medium, and large desktop widgets using sanitized App Group state.
-- Adjustable menu bar formatting, native monochrome symbol, appearance controls, and optional onboarding.
+- Adjustable menu bar formatting, native monochrome symbol, adaptive light/dark glass surfaces, and optional three-step onboarding.
 
 See [known limitations and verification](Documentation/VALIDATION.md) before relying on the preview.
 
+## Stitch design references
+
+The supplied Stitch project provided these concept artboards and HTML exports. They are design references, not screenshots of the shipping application; example IP addresses and diagnostics in the mockups are illustrative.
+
+| Popover | Settings | Widgets and onboarding |
+| --- | --- | --- |
+| [![Stitch popover concept](Documentation/Stitch/popover.png)](Documentation/Stitch/popover.png) | [![Stitch settings concept](Documentation/Stitch/settings.png)](Documentation/Stitch/settings.png) | [![Stitch widget concept](Documentation/Stitch/widget-onboarding.png)](Documentation/Stitch/widget-onboarding.png) |
+
+The [Stitch design brief](Documentation/Stitch/ipBan_STITCH_DESIGN.md) and exported [popover](Documentation/Stitch/popover.html), [settings](Documentation/Stitch/settings.html), and [widget/onboarding](Documentation/Stitch/widget-onboarding.html) HTML are included for design reference. The shipping app uses native SwiftUI and WidgetKit rather than these HTML files. A real app screenshot has not been captured yet.
+
 ## Install
 
-Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). Open `IPPrism.dmg`, drag **IP Prism.app** to **Applications**, and launch it. The app appears in the menu bar. `IPPrism.zip` is also provided when the release workflow succeeds.
+Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). Existing releases are named IP Prism. Future builds of the renamed app are packaged as `IpBan.dmg` and `IpBan.zip`; open the DMG and drag **IpBan.app** to **Applications**. The renamed build has not yet been published or verified on a Mac.
 
 Read the release's signing status. Development artifacts are ad-hoc signed, not Apple-notarized; Gatekeeper can block them. Do not disable Gatekeeper. Signed distribution requires the provisioning and notarization setup described in [Release instructions](Documentation/RELEASE.md).
 
-Add desktop widgets using macOS **Edit Widgets → IP Prism**. Keep the application running to refresh cached data. WidgetKit controls delivery timing; widgets are not continuously live. Both targets must have the same provisioned App Group for reliable sharing.
+Add desktop widgets using macOS **Edit Widgets → IpBan**. Keep the application running to refresh cached data. WidgetKit controls delivery timing; widgets are not continuously live. Both targets must have the same provisioned App Group for reliable sharing.
 
 ## Development
 
@@ -72,3 +82,7 @@ The earlier Node prototype remains as historical source; it is not part of the n
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [architecture](Documentation/ARCHITECTURE.md), and [security policy](SECURITY.md). MIT licensed. No commercial Apple assets or third-party sound recordings are included.
+
+## Designer handoff and kill switch
+
+The app includes a copyable Designer tab. Share [the full designer handoff](Documentation/DESIGNER-HANDOFF.md) without exposing connection data. A system-wide internet kill switch is **not implemented**; see [kill switch requirements and limitations](Documentation/KILL-SWITCH.md).

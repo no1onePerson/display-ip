@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"error":"#ffb4ab","on-primary-container":"#005d6c","tertiary-container":"#ffbe58","surface-container":"#19202d","outline":"#879396","surface-tint":"#60d6ef","status-error":"#FF999C","secondary":"#c4c0ff","text-primary-light":"#152033","on-primary-fixed":"#001f25","stroke-glass-light":"rgba(37, 52, 75, 0.12)","status-warning-light":"#965900","on-primary-fixed-variant":"#004e5b","text-secondary-light":"#516277","status-success":"#6BD6AA","tertiary-fixed-dim":"#fbbb55","text-tertiary-light":"#65768A","accent-violet-light":"#6957C7","stroke-glass-dark":"rgba(255, 255, 255, 0.14)","surface-container-lowest":"#070e1b","on-tertiary-fixed-variant":"#614000","surface-raised-light":"#F6F9FC","on-tertiary-container":"#744d00","surface-dim":"#0c1320","canvas-light":"#F4F7FB","tertiary-fixed":"#ffddb1","canvas-dark":"#0D111B","accent-cyan-light":"#087D9C","inverse-on-surface":"#2a313e","surface-container-highest":"#2e3543","text-secondary-dark":"#A8B5C6","on-tertiary":"#442b00","inverse-primary":"#006878","surface-base-dark":"#171E2B","error-container":"#93000a","tertiary":"#ffe1bb","on-error":"#690005","on-secondary-fixed-variant":"#3f3a93","primary-fixed-dim":"#60d6ef","status-warning":"#FFD18A","on-surface-variant":"#bcc9cc","on-secondary-fixed":"#110068","on-surface":"#dce2f5","surface-base-light":"#FFFFFF","status-success-light":"#187A56","on-secondary-container":"#b0adff","specular-highlight":"rgba(255, 255, 255, 0.22)","text-primary-dark":"#F6F8FD","on-secondary":"#28217b","surface-bright":"#323947","primary-fixed":"#a7eeff","on-primary":"#00363f","secondary-container":"#3f3a93","on-background":"#dce2f5","inverse-surface":"#dce2f5","status-error-light":"#B82E38","secondary-fixed":"#e3dfff","surface":"#0c1320","on-error-container":"#ffdad6","surface-hover-light":"#EAF0F7","text-tertiary-dark":"#8694A8","surface-variant":"#2e3543","on-tertiary-fixed":"#291800","surface-raised-dark":"#222D3D","primary":"#b2f0ff","secondary-fixed-dim":"#c4c0ff","primary-container":"#64d9f2","surface-container-low":"#151c29","surface-hover-dark":"#2B384B","background":"#0c1320","outline-variant":"#3d494c","surface-container-high":"#232a38"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin":"1rem","space-xs":"0.5rem","space-sm":"0.75rem","space-xl":"1.5rem","gutter":"0.75rem","space-2xs":"0.25rem","space-lg":"1.25rem","space-md":"1rem","space-2xl":"2rem"},"fontFamily":{"label-interactive":["Inter"],"popover-title":["Inter"],"display-hero-compact":["Inter"],"section-headline":["Inter"],"display-hero":["Inter"],"tabular-data":["Inter"],"caption-micro":["Inter"],"body-regular":["Inter"],"body-secondary":["Inter"]},"fontSize":{"label-interactive":["12px",{"lineHeight":"16px","letterSpacing":"0.005em","fontWeight":"500"}],"popover-title":["18px",{"lineHeight":"24px","letterSpacing":"-0.015em","fontWeight":"600"}],"display-hero-compact":["22px",{"lineHeight":"28px","letterSpacing":"-0.015em","fontWeight":"600"}],"section-headline":["13px",{"lineHeight":"18px","letterSpacing":"-0.005em","fontWeight":"600"}],"display-hero":["26px",{"lineHeight":"32px","letterSpacing":"-0.02em","fontWeight":"600"}],"tabular-data":["12px",{"lineHeight":"16px","letterSpacing":"-0.01em","fontWeight":"500"}],"caption-micro":["11px",{"lineHeight":"14px","letterSpacing":"0.01em","fontWeight":"500"}],"body-regular":["13px",{"lineHeight":"18px","letterSpacing":"0em","fontWeight":"400"}],"body-secondary":["12px",{"lineHeight":"16px","letterSpacing":"0em","fontWeight":"400"}]}}}}</script></head><body class="bg-canvas-dark text-on-surface font-body-regular text-body-regular min-h-screen select-none overflow-x-hidden"><header class="fixed top-0 inset-x-0 h-8 z-50 bg-surface-container-lowest/70 backdrop-blur-2xl shadow-[0_1px_8px_rgba(0,0,0,0.4)] flex items-center justify-between px-space-sm"><div class="flex items-center gap-space-md"><img alt="ipBan Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WumsUkG8CvCZHCVpnHYWc5VXECOVbRcG4KrVJOn4rg_FU0BNUwC1UgbRkMyE7KDq1Sl-zDv9h_51gvsLKUrgc0DQy1Ef6ObaPezhBxCxXXJaaMH_I0b1Ngh9_goCKJvT5Sgflvg7iN34GzqH9RcWUxwx7wY17F3twyqZvqFRZRV-HVmygGLaWpJJusxz3xyh0bUhKz9rLk6Tjz6QLOBQrN91qZZVTmwwXtFKrRkoM"/><span class="font-semibold text-caption-micro tracking-tight text-on-surface">ipBan</span><nav class="hidden sm:flex items-center gap-space-md" data-active-classes="text-on-surface font-semibold"><a aria-current="page" class="transition-colors text-on-surface font-semibold" data-path="menu-bar-popover" href="#">Overview</a><a class="font-caption-micro text-caption-micro text-on-surface-variant hover:text-on-surface transition-colors" data-path="network-telemetry" href="#">Telemetry</a><a class="font-caption-micro text-caption-micro text-on-surface-variant hover:text-on-surface transition-colors" data-path="threat-routing-logs" href="#">Routing</a><a class="font-caption-micro text-caption-micro text-on-surface-variant hover:text-on-surface transition-colors" data-path="macos-preferences" href="#">Preferences</a></nav></div><div class="flex items-center gap-space-sm"><div class="flex items-center gap-space-2xs px-space-xs py-0.5 rounded bg-surface-hover-dark/40 text-primary"><span class="material-symbols-outlined text-[14px]">shield_with_heart</span><span class="font-tabular-data text-tabular-data text-primary-fixed">Live</span></div><span class="material-symbols-outlined text-on-surface-variant text-[15px]">wifi</span><span class="material-symbols-outlined text-on-surface-variant text-[15px]">tune</span><span class="font-tabular-data text-caption-micro text-on-surface-variant">Tue 9:41 AM</span><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-8 min-h-screen bg-canvas-dark relative flex flex-col items-center justify-start p-space-md lg:p-space-2xl"><div class="flex flex-col w-full items-center justify-start relative select-none">
+<!-- Subtle Spatial Desktop Ambient Atmosphere -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+<div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[720px] h-[360px] bg-gradient-to-b from-primary/10 via-secondary/5 to-transparent blur-3xl rounded-full"></div>
+<div class="absolute top-1/3 -left-20 w-96 h-96 bg-primary-container/5 blur-[120px] rounded-full"></div>
+<div class="absolute top-1/4 -right-20 w-96 h-96 bg-secondary/5 blur-[120px] rounded-full"></div>
+</div>
+<!-- macOS Top Anchor Pointer Cue -->
+<div class="w-full flex justify-center items-center pb-1">
+<div class="w-0 h-0 border-l-[9px] border-l-transparent border-r-[9px] border-r-transparent border-b-[9px] border-b-surface-base-dark/95 filter drop-shadow-[0_-2px_4px_rgba(0,0,0,0.4)]"></div>
+</div>
+<!-- Main Workspace: Neo-Glass Popover Shell + Auxiliary Detached Inspection Panel -->
+<div class="w-full max-w-5xl flex flex-col lg:flex-row items-start justify-center gap-space-xl relative">
+<!-- PRIMARY POPOVER WINDOW: Exact 396px macOS Standard Canvas -->
+<div class="w-full max-w-[396px] mx-auto rounded-[20px] bg-surface-base-dark/90 backdrop-blur-2xl shadow-[0_24px_64px_rgba(0,0,0,0.65),0_2px_8px_rgba(0,0,0,0.4)] p-[1px] bg-gradient-to-b from-white/20 via-primary/15 to-white/5 transition-all relative">
+<!-- Inner Specular Shell Layer -->
+<div class="w-full bg-surface-container-lowest/85 backdrop-blur-xl rounded-[19px] overflow-hidden flex flex-col">
+<!-- Persistent Top Header -->
+<header class="w-full px-space-md pt-3.5 pb-space-xs flex items-center justify-between bg-surface-container-low/60 border-b-0">
+<div class="flex items-center gap-space-xs">
+<img alt="ipBan App Mark" class="w-6 h-6 object-contain rounded-md shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1WumsUkG8CvCZHCVpnHYWc5VXECOVbRcG4KrVJOn4rg_FU0BNUwC1UgbRkMyE7KDq1Sl-zDv9h_51gvsLKUrgc0DQy1Ef6ObaPezhBxCxXXJaaMH_I0b1Ngh9_goCKJvT5Sgflvg7iN34GzqH9RcWUxwx7wY17F3twyqZvqFRZRV-HVmygGLaWpJJusxz3xyh0bUhKz9rLk6Tjz6QLOBQrN91qZZVTmwwXtFKrRkoM"/>
+<div class="flex items-baseline gap-1.5">
+<span class="font-popover-title text-popover-title tracking-tight text-text-primary-dark">ipBan</span>
+<span class="font-caption-micro text-caption-micro text-text-tertiary-dark uppercase tracking-wider font-semibold">Core</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<!-- Connected Status Pill -->
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-raised-dark/80 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]">
+<span class="w-2 h-2 rounded-full bg-status-success animate-pulse shadow-[0_0_8px_rgba(107,214,170,0.8)]"></span>
+<span class="font-caption-micro text-caption-micro text-status-success font-medium">Online</span>
+<span class="text-text-tertiary-dark text-[10px]">•</span>
+<span class="font-tabular-data text-caption-micro text-primary-fixed">18ms</span>
+</div>
+<!-- Settings Gear Button -->
+<button aria-label="Open Preferences" class="w-7 h-7 rounded-lg bg-surface-hover-dark/40 hover:bg-surface-hover-dark text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] active:scale-95" id="pref-btn">
+<span class="material-symbols-outlined text-[17px]">settings</span>
+</button>
+</div>
+</header>
+<!-- macOS Segmented Control Tabs (6 Views) -->
+<div class="px-space-sm pt-space-xs pb-space-2xs">
+<div class="w-full p-0.5 bg-surface-container-lowest/90 rounded-xl flex items-center justify-between text-caption-micro font-caption-micro text-text-tertiary-dark shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)] overflow-x-auto no-scrollbar" role="tablist">
+<button class="tab-btn px-2.5 py-1 rounded-[8px] bg-surface-raised-dark text-text-primary-dark font-medium shadow-[0_1px_3px_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.18)] transition-all flex-shrink-0" data-tab="tab-overview">Overview</button>
+<button class="tab-btn px-2 py-1 rounded-[8px] hover:text-on-surface transition-all flex-shrink-0" data-tab="tab-network">Network</button>
+<button class="tab-btn px-2 py-1 rounded-[8px] hover:text-on-surface transition-all flex-shrink-0" data-tab="tab-location">Location</button>
+<button class="tab-btn px-2 py-1 rounded-[8px] hover:text-on-surface transition-all flex-shrink-0" data-tab="tab-providers">Providers</button>
+<button class="tab-btn px-2 py-1 rounded-[8px] hover:text-on-surface transition-all flex-shrink-0" data-tab="tab-history">History</button>
+<button class="tab-btn px-2 py-1 rounded-[8px] hover:text-on-surface transition-all flex-shrink-0" data-tab="tab-designer">Spec</button>
+</div>
+</div>
+<!-- Scrollable Diagnostic Viewport Body (~480px scroll frame) -->
+<div class="px-space-md py-space-xs flex flex-col gap-space-sm max-h-[468px] overflow-y-auto overflow-x-hidden">
+<!-- TAB 1: OVERVIEW PANE -->
+<div class="tab-pane flex flex-col gap-space-sm w-full" id="tab-overview">
+<!-- Hero Dual IPv4 Card -->
+<div class="group relative rounded-xl p-space-md bg-surface-container/70 hover:bg-surface-container/90 transition-all shadow-[0_8px_20px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.14)] overflow-hidden">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded bg-primary/20 text-primary-container font-caption-micro text-[10px] flex items-center justify-center font-bold">4</span>
+<span class="font-section-headline text-section-headline text-text-secondary-dark tracking-wide">Public IPv4</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-caption-micro text-[10px] font-semibold tracking-wide">Primary Public</span>
+</div>
+</div>
+<!-- Primary IP Figure with Monospace Character Grid -->
+<div class="flex items-center justify-between mt-1">
+<span class="font-display-hero-compact text-display-hero-compact tracking-tight text-text-primary-dark font-mono select-all hover:text-primary-fixed transition-colors cursor-pointer" id="ipv4-val" title="Click to copy IP">203.0.113.42</span>
+<button aria-label="Copy IPv4" class="w-8 h-8 rounded-lg bg-surface-hover-dark/70 hover:bg-primary-container hover:text-on-primary-container text-on-surface-variant flex items-center justify-center transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] active:scale-95 group/btn" onclick="copyToClipboard('203.0.113.42', 'IPv4')">
+<span class="material-symbols-outlined text-[17px] group-hover/btn:scale-110 transition-transform">content_copy</span>
+</button>
+</div>
+<!-- Micro Route Pill Meta -->
+<div class="mt-2.5 pt-2 flex items-center justify-between text-caption-micro font-caption-micro text-text-tertiary-dark bg-surface-container-lowest/40 -mx-space-md -mb-space-md px-space-md py-1.5">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-status-success">dns</span>
+<span>Direct Cloud Gateway</span>
+</div>
+<span class="font-tabular-data text-text-secondary-dark">TTL 58 · MTU 1500</span>
+</div>
+</div>
+<!-- IPv6 Hero Card -->
+<div class="group relative rounded-xl p-space-md bg-surface-container/70 hover:bg-surface-container/90 transition-all shadow-[0_8px_20px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.14)] overflow-hidden">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-1.5">
+<span class="w-4 h-4 rounded bg-secondary/20 text-secondary font-caption-micro text-[10px] flex items-center justify-center font-bold">6</span>
+<span class="font-section-headline text-section-headline text-text-secondary-dark tracking-wide">Public IPv6</span>
+</div>
+<span class="font-caption-micro text-caption-micro text-text-tertiary-dark font-tabular-data">Global Unicast</span>
+</div>
+<div class="flex items-center justify-between mt-1">
+<span class="font-tabular-data text-tabular-data tracking-tight text-text-primary-dark font-mono break-all select-all leading-relaxed hover:text-secondary transition-colors cursor-pointer" id="ipv6-val" title="Click to copy IP">2001:db8:85a3::8a2e:370:7334</span>
+<button aria-label="Copy IPv6" class="w-8 h-8 rounded-lg bg-surface-hover-dark/70 hover:bg-secondary hover:text-on-secondary text-on-surface-variant flex items-center justify-center transition-all ml-2 flex-shrink-0 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] active:scale-95" onclick="copyToClipboard('2001:db8:85a3::8a2e:370:7334', 'IPv6')">
+<span class="material-symbols-outlined text-[17px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Approximate Geolocation Location Strip -->
+<div class="rounded-xl p-space-sm bg-surface-raised-dark/60 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] flex items-start gap- space-sm justify-between">
+<div class="flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high/80 flex items-center justify-center text-[16px] shadow-sm flex-shrink-0 mt-0.5">
+                  🇨🇦
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-section-headline text-section-headline text-text-primary-dark truncate">Toronto, Ontario</span>
+<span class="text-caption-micro font-caption-micro text-text-tertiary-dark">CA</span>
+</div>
+<span class="font-caption-micro text-caption-micro text-text-tertiary-dark leading-tight mt-0.5">Approximate · IP-based geolocation (no GPS)</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-text-secondary-dark font-tabular-data text-[10px] font-semibold flex-shrink-0">
+                ±12km
+              </span>
+</div>
+<!-- Detailed Network & Provider Metadata Panel -->
+<div class="rounded-xl bg-surface-container-low/70 p-space-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] flex flex-col gap-1.5">
+<!-- Row: ISP -->
+<div class="h-7 px-1 flex items-center justify-between text-body-secondary font-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Autonomous System</span>
+<span class="font-tabular-data text-tabular-data text-text-primary-dark font-medium">AS64500 (Demo)</span>
+</div>
+<div class="h-[1px] w-full bg-white/[0.04]"></div>
+<!-- Row: Organization -->
+<div class="h-7 px-1 flex items-center justify-between text-body-secondary font-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Upstream Provider</span>
+<span class="font-body-regular text-body-regular text-text-primary-dark truncate max-w-[190px]">Cloud Provider Services</span>
+</div>
+<div class="h-[1px] w-full bg-white/[0.04]"></div>
+<!-- Row: Resolution Adapter -->
+<div class="h-7 px-1 flex items-center justify-between text-body-secondary font-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Active Resolver</span>
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success"></span>
+<span class="font-caption-micro text-caption-micro text-primary-fixed">Provider 1 (ipinfo adapter)</span>
+</div>
+</div>
+</div>
+<!-- Truthful Status Disclaimer & Last Refresh Marker -->
+<div class="flex items-center justify-between px-1 py-0.5 text-caption-micro font-caption-micro text-text-tertiary-dark">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-text-tertiary-dark">schedule</span>
+<span>Last successful check: <strong class="font-tabular-data text-text-secondary-dark font-normal">42s ago</strong></span>
+</div>
+<span class="text-[10px] text-text-tertiary-dark tracking-wide">Sync auto: 60s</span>
+</div>
+</div>
+<!-- TAB 2: NETWORK DEEP-DIVE PREVIEW -->
+<div class="tab-pane hidden flex-col gap-space-sm w-full" id="tab-network">
+<div class="rounded-xl p-space-md bg-surface-container/70 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)]">
+<span class="font-section-headline text-section-headline text-text-primary-dark block mb-2">Local Interface Telemetry</span>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Active Adapter</span>
+<span class="font-mono text-tabular-data font-semibold text-primary">Wi-Fi (en0)</span>
+</div>
+<div class="flex items-center justify-between text-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Local Gateway</span>
+<span class="font-mono text-tabular-data text-text-primary-dark">192.168.1.1</span>
+</div>
+<div class="flex items-center justify-between text-body-secondary">
+<span class="text-text-secondary-dark font-caption-micro text-caption-micro">Hardware MAC</span>
+<span class="font-mono text-tabular-data text-text-tertiary-dark">3e:12:44:89:af:91</span>
+</div>
+</div>
+</div>
+<!-- Truth In Routing / VPN Evidence Notice -->
+<div class="rounded-xl p-space-sm bg-surface-container-high/60 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+<div class="flex items-center justify-between mb-1">
+<span class="font-section-headline text-caption-micro text-text-secondary-dark uppercase tracking-wider">VPN / Proxy Evidence</span>
+<span class="px-2 py-0.5 rounded bg-surface-hover-dark text-text-secondary-dark font-caption-micro text-[10px]">Not reported</span>
+</div>
+<p class="font-caption-micro text-caption-micro text-text-tertiary-dark leading-relaxed">
+                Provider evidence is limited; not proof of anonymity. No active WireGuard or macOS system network extension tunnels detected on en0.
+              </p>
+</div>
+</div>
+<!-- TAB 4: PROVIDERS SNAPSHOT (Active Inspection) -->
+<div class="tab-pane hidden flex-col gap-space-2xs w-full" id="tab-providers">
+<div class="flex items-center justify-between px-1 mb-1">
+<span class="font-section-headline text-section-headline text-text-primary-dark">8 Redundant Providers</span>
+<span class="font-caption-micro text-caption-micro text-status-success font-semibold">All Healthy</span>
+</div>
+<div class="grid grid-cols-2 gap-1.5">
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">ipinfo.io</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">cloudflare-dns</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">ipify v4/v6</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">icanhazip</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">aws-checkip</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">ident.me</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">akamai-probe</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+<div class="p-2 rounded-lg bg-surface-container-low flex items-center justify-between">
+<span class="font-caption-micro text-caption-micro text-text-primary-dark">fastly-native</span>
+<span class="w-2 h-2 rounded-full bg-status-success shadow-[0_0_6px_rgba(107,214,170,0.8)]"></span>
+</div>
+</div>
+</div>
+<!-- TAB 3, 5, 6 FALLBACK DYNAMIC STUB -->
+<div class="tab-pane hidden flex-col items-center justify-center py-12 text-center text-text-tertiary-dark" id="tab-generic">
+<span class="material-symbols-outlined text-[32px] mb-2 text-primary-container">query_stats</span>
+<span class="font-section-headline text-section-headline text-text-primary-dark">Telemetry Module Ready</span>
+<p class="font-caption-micro text-caption-micro mt-1 max-w-[220px]">Realtime background daemon recording route shifts and latency changes.</p>
+</div>
+</div>
+<!-- Persistent macOS Bottom Action Rail -->
+<footer class="w-full px-space-md py-3 bg-surface-container-low/90 backdrop-blur-md flex items-center justify-between border-t-0 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+<!-- Refresh Action -->
+<button class="h-8 px-3 rounded-lg bg-surface-hover-dark/60 hover:bg-surface-hover-dark text-text-primary-dark font-label-interactive text-label-interactive flex items-center gap-1.5 transition-all shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12)] active:scale-95" id="refresh-btn">
+<span class="material-symbols-outlined text-[15px] transition-transform duration-700" id="refresh-icon">refresh</span>
+<span>Refresh</span>
+</button>
+<div class="flex items-center gap-space-xs">
+<!-- Copy IP Primary Split / Action -->
+<button class="h-8 px-3 rounded-lg bg-primary-container hover:bg-primary-fixed text-on-primary-container font-label-interactive text-label-interactive font-semibold flex items-center gap-1 shadow-[0_0_14px_rgba(100,217,242,0.3)] active:scale-95 transition-all" onclick="copyToClipboard('203.0.113.42', 'IPv4')">
+<span class="material-symbols-outlined text-[15px]">file_copy</span>
+<span>Copy IP</span>
+</button>
+<!-- Quit Button (Standard native menu bar convention) -->
+<button class="h-8 px-2 rounded-lg bg-surface-hover-dark/30 hover:bg-surface-hover-dark text-text-tertiary-dark hover:text-status-error font-caption-micro text-caption-micro transition-all flex items-center gap-1" onclick="simulateQuit()" title="Quit ipBan (⌘Q)">
+<span>⌘Q</span>
+</button>
+</div>
+</footer>
+</div>
+<!-- Live Floating Notification Toast Layer -->
+<div class="absolute bottom-14 left-1/2 -translate-x-1/2 pointer-events-none opacity-0 translate-y-2 transition-all duration-300 z-50 flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-raised-dark/95 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.25)] text-text-primary-dark" id="copy-toast">
+<span class="material-symbols-outlined text-status-success text-[15px]">check_circle</span>
+<span class="font-caption-micro text-caption-micro font-medium" id="toast-text">Copied IPv4: 203.0.113.42</span>
+</div>
+</div>
+<!-- AUXILIARY SIDEBAR INSPECTION DECK (Native System Preferences & Multi-State Companion) -->
+<div class="w-full lg:w-[460px] flex flex-col gap-space-md">
+<!-- Live Companion Card: Cupertino Native Light Mode Appearance Preview -->
+<div class="rounded-[20px] bg-canvas-light text-text-primary-light p-space-md shadow-[0_20px_48px_rgba(0,0,0,0.25)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface-hover-light text-accent-cyan-light font-caption-micro text-[11px] font-bold tracking-wide uppercase">System Theme Mode</span>
+<span class="font-section-headline text-section-headline text-text-primary-light">Light Appearance Preview</span>
+</div>
+<span class="w-2.5 h-2.5 rounded-full bg-status-success-light"></span>
+</div>
+<div class="p-space-sm bg-surface-base-light rounded-xl shadow-sm flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-caption-micro text-caption-micro text-text-secondary-light">Active IPv4 (Light Acrylic)</span>
+<span class="font-display-hero-compact text-[18px] text-text-primary-light font-mono font-semibold">203.0.113.42</span>
+</div>
+<span class="px-2.5 py-1 rounded-md bg-accent-cyan-light text-white font-caption-micro text-[11px] font-semibold shadow-sm">Verified</span>
+</div>
+<div class="mt-2.5 flex items-center justify-between text-caption-micro font-caption-micro text-text-tertiary-light">
+<span>Target Window Blur: 28pt System Material</span>
+<span class="font-tabular-data">WCAG AA 8.4:1 Pass</span>
+</div>
+</div>
+<!-- Diagnostic Engine Telemetry State Bento Card -->
+<div class="rounded-[20px] bg-surface-container/70 p-space-md shadow-[0_16px_40px_rgba(0,0,0,0.35),inset_0_1px_0_0_rgba(255,255,255,0.12)] flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">network_ping</span>
+<span class="font-section-headline text-section-headline text-text-primary-dark">Multi-Probe Latency Sparkline</span>
+</div>
+<span class="font-caption-micro text-caption-micro text-text-secondary-dark font-tabular-data">6 Probes Active</span>
+</div>
+<!-- Inline SVG Latency Graph (Under 2KB, Cupertino Monospace Style) -->
+<div class="w-full h-20 bg-surface-container-lowest/60 rounded-xl p-2 flex flex-col justify-between relative overflow-hidden shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
+<div class="flex justify-between text-[10px] text-text-tertiary-dark font-tabular-data">
+<span>Peak 26ms</span>
+<span class="text-status-success font-medium">Avg 18ms</span>
+<span>Min 14ms</span>
+</div>
+<svg class="w-full h-9 overflow-visible" fill="none" viewbox="0 0 300 40">
+<defs>
+<lineargradient id="latencyGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#64d9f2" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#64d9f2" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,32 Q25,24 50,28 T100,18 T150,15 T200,22 T250,12 T300,18 L300,40 L0,40 Z" fill="url(#latencyGrad)"></path>
+<path d="M0,32 Q25,24 50,28 T100,18 T150,15 T200,22 T250,12 T300,18" fill="none" stroke="#64d9f2" stroke-linecap="round" stroke-width="2"></path>
+<circle class="animate-ping" cx="300" cy="18" fill="#64d9f2" r="3"></circle>
+<circle cx="300" cy="18" fill="#64d9f2" r="3"></circle>
+</svg>
+<div class="flex justify-between text-[9px] text-text-tertiary-dark font-mono">
+<span>-5m</span>
+<span>-3m</span>
+<span>-1m</span>
+<span class="text-primary font-semibold">Live</span>
+</div>
+</div>
+<!-- Quick Switch Simulation Deck -->
+<div class="grid grid-cols-2 gap-2 pt-1">
+<button class="px-3 py-2 rounded-lg bg-surface-hover-dark/50 hover:bg-surface-hover-dark text-text-secondary-dark hover:text-text-primary-dark font-caption-micro text-caption-micro transition-all text-left flex items-center justify-between shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]" onclick="toggleMockIP()">
+<span>Rotate IP Node</span>
+<span class="material-symbols-outlined text-[15px]">swap_horiz</span>
+</button>
+<button class="px-3 py-2 rounded-lg bg-surface-hover-dark/50 hover:bg-surface-hover-dark text-text-secondary-dark hover:text-text-primary-dark font-caption-micro text-caption-micro transition-all text-left flex items-center justify-between shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]" onclick="simulateFullDiagnostics()">
+<span>Run Deep Audit</span>
+<span class="material-symbols-outlined text-[15px]">verified</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Logic for Menu Bar Popover Simulation -->
+<script>
+    // Tab Switching Micro-Interactions
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanes = {
+      'tab-overview': document.getElementById('tab-overview'),
+      'tab-network': document.getElementById('tab-network'),
+      'tab-location': document.getElementById('tab-overview'),
+      'tab-providers': document.getElementById('tab-providers'),
+      'tab-history': document.getElementById('tab-generic'),
+      'tab-designer': document.getElementById('tab-overview')
+    };
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Reset button states
+        tabButtons.forEach(b => {
+          b.className = 'tab-btn px-2 py-1 rounded-[8px] text-text-tertiary-dark hover:text-on-surface transition-all flex-shrink-0';
+        });
+        // Set active button
+        btn.className = 'tab-btn px-2.5 py-1 rounded-[8px] bg-surface-raised-dark text-text-primary-dark font-medium shadow-[0_1px_3px_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.18)] transition-all flex-shrink-0';
+
+        const targetId = btn.getAttribute('data-tab');
+        
+        // Hide all panes
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+
+        // Show matching pane or generic
+        if (targetId === 'tab-network') {
+          document.getElementById('tab-network').classList.remove('hidden');
+        } else if (targetId === 'tab-providers') {
+          document.getElementById('tab-providers').classList.remove('hidden');
+        } else if (targetId === 'tab-history') {
+          document.getElementById('tab-generic').classList.remove('hidden');
+        } else {
+          document.getElementById('tab-overview').classList.remove('hidden');
+        }
+      });
+    });
+
+    // Native Copy Utility & Ephemeral Toast Notification
+    function copyToClipboard(text, label) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      }
+      
+      const toast = document.getElementById('copy-toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = `Copied ${label}: ${text}`;
+      
+      // Animate In
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      // Auto dismiss after 1.8s matching design spec
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-2');
+      }, 1800);
+    }
+
+    // Refresh Action with Subtle Spin Transition
+    const refreshBtn = document.getElementById('refresh-btn');
+    const refreshIcon = document.getElementById('refresh-icon');
+
+    refreshBtn.addEventListener('click', () => {
+      refreshIcon.classList.add('rotate-[360deg]');
+      refreshBtn.classList.add('pointer-events-none', 'opacity-80');
+      
+      setTimeout(() => {
+        refreshIcon.classList.remove('rotate-[360deg]');
+        refreshBtn.classList.remove('pointer-events-none', 'opacity-80');
+        copyToClipboard('Resolved in 18ms', 'Network Stack');
+      }, 700);
+    });
+
+    // Simulation Utilities
+    let toggledState = false;
+    function toggleMockIP() {
+      const ipv4El = document.getElementById('ipv4-val');
+      toggledState = !toggledState;
+      if (toggledState) {
+        ipv4El.textContent = '198.51.100.77';
+        copyToClipboard('198.51.100.77', 'Mock Secondary');
+      } else {
+        ipv4El.textContent = '203.0.113.42';
+        copyToClipboard('203.0.113.42', 'Primary Public');
+      }
+    }
+
+    function simulateFullDiagnostics() {
+      copyToClipboard('All 8 Resolvers in Parity', 'Diagnostic Engine');
+    }
+
+    function simulateQuit() {
+      alert("ipBan macOS Menu Bar: Daemon running in background. Use Activity Monitor or standard Quit shortcut.");
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest/50 py-space-sm text-center"><div class="w-full px-space-md text-on-surface-variant font-caption-micro text-caption-micro flex items-center justify-between"><span>ipBan macOS Engine v2.4.1 (Darwin 23.4.0)</span><span class="font-tabular-data text-caption-micro text-status-success">Encrypted Core Online</span></div></footer></body></html>

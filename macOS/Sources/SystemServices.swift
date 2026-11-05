@@ -29,7 +29,7 @@ import PrismCore
         guard status == .authorized || status == .provisional,
               policy.permits(key: key, at: Date(), hour: Calendar.current.component(.hour, from: Date())) else { return false }
         let content = UNMutableNotificationContent(); content.title = title
-        content.body = defaults.bool(forKey: "privacy") ? "Open IP Prism for details." : detail
+        content.body = defaults.bool(forKey: "privacy") ? "Open IpBan for details." : detail
         do { try await UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: key, content: content, trigger: nil)); return true }
         catch { return false }
     }
