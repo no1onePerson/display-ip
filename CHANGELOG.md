@@ -2,7 +2,7 @@
 
 ## 0.4.0 development preview
 
-The app is IpBan. The menu bar gear waits until the panel closes, then opens a retained settings window and brings it forward. Closing that window returns to the menu bar on a real session. The release build keeps that close callback off the main-actor executor, because Xcode 16.4 traps when AppKit calls an isolated method. The runner also traps if the smoke test changes activation policy, so that check only activates and orders the window forward. Native CI builds and analyzes arm64 and x86_64 together so the core module exists for both slices. The Xcode project, widget, and URL scheme use the IpBan name; the previous URL scheme still opens the app. The system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
+The app is IpBan. The menu bar gear waits until the panel closes, then opens a retained settings window and brings it forward. Closing that window returns to the menu bar on a real session. The release build keeps that close callback off the main-actor executor, because Xcode 16.4 traps when AppKit calls an isolated method. On the release runner the smoke test reopens the window in the same turn, because a gap with no key window makes that session change activation policy and trap. Native CI builds and analyzes arm64 and x86_64 together so the core module exists for both slices. The Xcode project, widget, and URL scheme use the IpBan name; the previous URL scheme still opens the app. The system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
 
 ## 0.3.0 development preview
 

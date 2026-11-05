@@ -19,12 +19,13 @@ import Foundation
             SmokeTrace.mark("open")
             SettingsOpener.open(model: model)
             guard let window = await self.waitForSettings() else { self.smokeFail("Settings window failed to open") }
+            // Reopen in this turn. A gap with no key window makes the runner
+            // change activation policy, and that call traps.
             SmokeTrace.mark("close")
             window.close()
             SmokeTrace.mark("closed")
-            try? await Task.sleep(for: .milliseconds(200))
             SmokeTrace.mark("reopen")
-            SettingsOpener.open(model: model)
+            SettingsWindowController.shared.present()
             guard let reopened = await self.waitForSettings(), reopened === window else { self.smokeFail("Settings window failed to reopen") }
             fputs("IPBAN_SETTINGS_SMOKE_OK\n", stdout)
             fflush(stdout)
