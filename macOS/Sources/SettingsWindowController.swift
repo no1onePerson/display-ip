@@ -1,18 +1,31 @@
 import AppKit
+import Darwin
 import SwiftUI
 
 /// The menu bar panel closes in the same turn as the gear click. A window
 /// ordered front during that turn is dismissed with the panel, so the real
 /// presentation waits until the panel has resigned.
 @MainActor enum SettingsOpener {
+    static var smokeTest: Bool { CommandLine.arguments.contains("--smoke-test-settings") }
+
     static func open(model: PrismModel) {
         SettingsWindowController.shared.prepare(model: model)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
             let app = NSApplication.shared
-            app.setActivationPolicy(.regular)
+            // The hosted runner's WindowServer traps if an agent app changes policy.
+            if !smokeTest { app.setActivationPolicy(.regular) }
             app.activate(ignoringOtherApps: true)
             SettingsWindowController.shared.present()
+            SmokeTrace.mark("presented")
         }
+    }
+}
+
+enum SmokeTrace {
+    static func mark(_ message: String) {
+        guard CommandLine.arguments.contains("--smoke-test-settings") else { return }
+        fputs("IPBAN_SETTINGS_SMOKE \(message)\n", stdout)
+        fflush(stdout)
     }
 }
 
@@ -63,6 +76,6 @@ import SwiftUI
         let others = NSApplication.shared.windows.contains { candidate in
             candidate !== settings && candidate.isVisible && candidate.canBecomeKey
         }
-        if !others { NSApplication.shared.setActivationPolicy(.accessory) }
+        if !others, !SettingsOpener.smokeTest { NSApplication.shared.setActivationPolicy(.accessory) }
     }
 }

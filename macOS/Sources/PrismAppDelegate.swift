@@ -13,15 +13,20 @@ import Foundation
         fputs("IPBAN_SETTINGS_SMOKE_START\n", stdout)
         let model = PrismModel()
         smokeModel = model
+        SmokeTrace.mark("model")
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(400))
+            SmokeTrace.mark("open")
             SettingsOpener.open(model: model)
             guard let window = await self.waitForSettings() else { self.smokeFail("Settings window failed to open") }
+            SmokeTrace.mark("close")
             window.close()
             try? await Task.sleep(for: .milliseconds(200))
+            SmokeTrace.mark("reopen")
             SettingsOpener.open(model: model)
             guard let reopened = await self.waitForSettings(), reopened === window else { self.smokeFail("Settings window failed to reopen") }
             fputs("IPBAN_SETTINGS_SMOKE_OK\n", stdout)
+            fflush(stdout)
             NSApplication.shared.terminate(nil)
         }
     }
