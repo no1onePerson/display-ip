@@ -8,7 +8,7 @@
 
 Formerly IP Prism. A native menu bar companion that puts your public connection in focus. Built with Swift 6, SwiftUI, Network.framework, and WidgetKit. macOS 14 or newer; no account or API key required for the basic provider flow.
 
-**Development preview.** This build needs macOS validation, including the settings window, widgets and permissions. The screenshots below are Stitch design mockups, not captures of the running app. The portable Swift core has 16 deterministic tests.
+**Development preview.** The macOS build and a settings-window open/close/reopen smoke test passed in CI. Widgets, permissions, visual behavior, and installation still need hands-on Mac validation. The screenshots below are Stitch design mockups, not captures of the running app. The portable Swift core has 16 deterministic tests.
 
 ## Features implemented
 
@@ -37,7 +37,7 @@ The [Stitch design brief](Documentation/Stitch/ipBan_STITCH_DESIGN.md) and expor
 
 ## Install
 
-Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). Existing releases are named IP Prism. Future builds of the renamed app are packaged as `IpBan.dmg` and `IpBan.zip`; open the DMG and drag **IpBan.app** to **Applications**. The renamed build has not yet been published or verified on a Mac.
+Download a successful build from [Releases](https://github.com/no1onePerson/display-ip/releases). The renamed app is packaged as `IpBan.dmg` and `IpBan.zip`; open the DMG and drag **IpBan.app** to **Applications**. Older releases are named IP Prism.
 
 Read the release's signing status. Development artifacts are ad-hoc signed, not Apple-notarized; Gatekeeper can block them. Do not disable Gatekeeper. Signed distribution requires the provisioning and notarization setup described in [Release instructions](Documentation/RELEASE.md).
 

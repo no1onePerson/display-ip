@@ -8,16 +8,23 @@
 - Native Swift source syntax parsing passed. This is not Apple-framework type checking or compilation.
 - Workflow YAML parsed, packaging shell syntax checked, project generation exercised.
 
+## macOS CI: 0.4.0-preview.1
+
+- Release workflow passed on macOS: portable core tests, universal Release app and widget build, bundle/plist checks, ad-hoc signature verification, DMG mount and Applications shortcut, ZIP extraction, and checksums.
+- The settings-window smoke test opened, closed, and reopened the retained AppKit window on the macOS runner. This programmatic test does not establish that every settings control works or that the menu bar presentation is visually correct.
+- Downloaded the published DMG and ZIP into Linux and verified both published SHA-256 checksums, ZIP integrity, app and widget bundle IDs/version, app icon, and both Mach-O architectures.
+- No Apple Developer ID or notarization credentials were available. The preview is ad-hoc signed, not notarized.
+
 ## External blockers
 
-- Linux cannot compile/link AppKit, SwiftUI, UserNotifications, ServiceManagement, or WidgetKit targets, launch the application, or produce a real macOS DMG.
+- This Linux workspace cannot compile/link AppKit, SwiftUI, UserNotifications, ServiceManagement, or WidgetKit targets or launch the application locally; the GitHub macOS runner built and packaged the preview.
 - GitHub Actions API access returned HTTP 403. Public run summaries are accessible through the GitHub website; full logs and authenticated artifact access may still require repository access.
 - Provider/documentation domains returned proxy HTTP 403; real response and current terms verification remain pending.
 - No Apple Developer certificate, App Group provisioning profiles, or notarization credentials are configured.
 
 ## Native release gates still unverified
 
-Build both architectures and widget; run the core tests on macOS; inspect native bundle, entitlements, and App Group sharing; verify login approval, notification authorization/denial/revocation, first launch, repeated sleep/wake, offline recovery, sound volume, privacy mode, export permissions, and widget deep links. Inspect layout with real IPv6 values in light/dark, high contrast, Reduce Motion, Reduce Transparency, and VoiceOver. Capture real screenshots only after running the app. Measure memory, idle CPU, wakeups, and request frequency; no performance numbers are claimed.
+Verify signed entitlements and App Group sharing; verify login approval, notification authorization/denial/revocation, first launch, repeated sleep/wake, offline recovery, sound volume, privacy mode, export permissions, and widget deep links. Inspect layout with real IPv6 values in light/dark, high contrast, Reduce Motion, Reduce Transparency, and VoiceOver. Capture real screenshots only after running the app. Measure memory, idle CPU, wakeups, and request frequency; no performance numbers are claimed.
 
 ## Current feature limits
 
