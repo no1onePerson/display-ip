@@ -2,7 +2,7 @@
 
 ## 0.4.0 development preview
 
-The app is IpBan. The menu bar gear waits until the panel closes, then opens a retained settings window and brings it forward. Native CI builds and analyzes arm64 and x86_64 together so the core module exists for both slices. The Xcode project, widget, and URL scheme use the IpBan name; the previous URL scheme still opens the app. The system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
+The app is IpBan. The menu bar gear waits until the panel closes, then opens a retained settings window and brings it forward. Closing that window returns to the menu bar without assuming the main-actor executor, which crashed the release smoke test on Xcode 16.4. Native CI builds and analyzes arm64 and x86_64 together so the core module exists for both slices. The Xcode project, widget, and URL scheme use the IpBan name; the previous URL scheme still opens the app. The system-wide kill switch remains unavailable. This preview is ad-hoc signed, not notarized.
 
 ## 0.3.0 development preview
 

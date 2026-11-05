@@ -80,6 +80,8 @@ jobs:
             exit 0
           fi
           APP='macOS/build/IpBan.xcarchive/Products/Applications/IpBan.app'
+          # Redirected stderr is block-buffered unless this is set, which hid the last crash.
+          export NSUnbufferedIO=YES
           "$APP/Contents/MacOS/IpBan" --smoke-test-settings > settings-smoke.log 2>&1 &
           PID=$!
           for attempt in $(seq 1 30); do
@@ -88,6 +90,8 @@ jobs:
           done
           if kill -0 "$PID" 2>/dev/null; then
             kill "$PID" || true
+            wait "$PID" || true
+            cat settings-smoke.log || true
             echo '::error::Settings-window smoke test timed out.'
             exit 1
           fi

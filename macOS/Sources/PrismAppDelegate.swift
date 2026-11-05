@@ -1,4 +1,5 @@
 import AppKit
+import Darwin
 import Foundation
 
 /// Release automation exercises the same deferred settings action as the gear.
@@ -7,29 +8,39 @@ import Foundation
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard CommandLine.arguments.contains("--smoke-test-settings") else { return }
+        setvbuf(stdout, nil, _IONBF, 0)
+        setvbuf(stderr, nil, _IONBF, 0)
+        fputs("IPBAN_SETTINGS_SMOKE_START\n", stdout)
         let model = PrismModel()
         smokeModel = model
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(400))
             SettingsOpener.open(model: model)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                let controller = SettingsWindowController.shared
-                guard let window = controller.window, window.isVisible, window.frame.width >= 700 else {
-                    print("Settings window failed to open")
-                    exit(1)
-                }
-                window.close()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                    SettingsOpener.open(model: model)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                        guard controller.window === window, window.isVisible else {
-                            print("Settings window failed to reopen")
-                            exit(1)
-                        }
-                        print("IPBAN_SETTINGS_SMOKE_OK")
-                        NSApplication.shared.terminate(nil)
-                    }
-                }
-            }
+            guard let window = await self.waitForSettings() else { self.smokeFail("Settings window failed to open") }
+            window.close()
+            try? await Task.sleep(for: .milliseconds(200))
+            SettingsOpener.open(model: model)
+            guard let reopened = await self.waitForSettings(), reopened === window else { self.smokeFail("Settings window failed to reopen") }
+            fputs("IPBAN_SETTINGS_SMOKE_OK\n", stdout)
+            NSApplication.shared.terminate(nil)
         }
+    }
+
+    private func waitForSettings() async -> NSWindow? {
+        for _ in 0..<24 {
+            if let window = SettingsWindowController.shared.window, window.isVisible, window.frame.width >= 700 { return window }
+            try? await Task.sleep(for: .milliseconds(150))
+        }
+        if let window = SettingsWindowController.shared.window {
+            fputs("visible=\(window.isVisible) width=\(window.frame.width)\n", stderr)
+        } else {
+            fputs("settings window missing\n", stderr)
+        }
+        return nil
+    }
+
+    private func smokeFail(_ message: String) -> Never {
+        fputs(message + "\n", stderr)
+        exit(1)
     }
 }

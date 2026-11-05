@@ -19,7 +19,6 @@ import SwiftUI
 @MainActor final class SettingsWindowController: NSWindowController {
     static let shared = SettingsWindowController()
     private var model: PrismModel?
-    private var closeObserver: NSObjectProtocol?
 
     private init() { super.init(window: nil) }
     required init?(coder: NSCoder) { super.init(coder: coder) }
@@ -48,9 +47,9 @@ import SwiftUI
             preferences.hidesOnDeactivate = false
             preferences.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
             window = preferences
-            closeObserver = NotificationCenter.default.addObserver(forName: NSWindow.willCloseNotification, object: preferences, queue: .main) { [weak self] _ in
-                MainActor.assumeIsolated { self?.returnToMenuBarIfIdle() }
-            }
+            // AppKit delivers this on the main thread. A block that calls
+            // MainActor.assumeIsolated traps on the Xcode 16.4 runtime.
+            NotificationCenter.default.addObserver(self, selector: #selector(settingsWindowWillClose(_:)), name: NSWindow.willCloseNotification, object: preferences)
         } else if let hosting = window?.contentViewController as? NSHostingController<PrismSettings> {
             hosting.rootView = PrismSettings(model: model)
         }
@@ -59,9 +58,10 @@ import SwiftUI
         window?.orderFrontRegardless()
     }
 
-    private func returnToMenuBarIfIdle() {
+    @objc private func settingsWindowWillClose(_ notification: Notification) {
+        guard let settings = window, notification.object as AnyObject? === settings else { return }
         let others = NSApplication.shared.windows.contains { candidate in
-            candidate !== window && candidate.isVisible && candidate.canBecomeKey
+            candidate !== settings && candidate.isVisible && candidate.canBecomeKey
         }
         if !others { NSApplication.shared.setActivationPolicy(.accessory) }
     }
